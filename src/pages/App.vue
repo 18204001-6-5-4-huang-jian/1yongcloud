@@ -5,7 +5,7 @@
         <header-section class="header-section"></header-section>
       </el-header>
       <el-container>
-        <el-aside width="201px">
+        <el-aside :width="$store.state.menu_state?'60px':'201px'">
           <left-slide></left-slide>
         </el-aside>
         <el-main>

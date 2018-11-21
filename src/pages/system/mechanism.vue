@@ -5,12 +5,12 @@
         <el-form-item
           label="机构名称"
         >
-          <el-input v-model="form.deptName" placeholder="请输入机构名称" size="small" clearable></el-input>
+          <el-input v-model="form.deptName" placeholder="请输入机构名称" style="width: 220px;" :size="$store.state.size" clearable></el-input>
         </el-form-item>
         <el-form-item
           label="机构类型"
         >
-          <el-select v-model="form.deptType" placeholder="请选择" style="width:200px" clearable :size="$store.state.size">
+          <el-select v-model="form.deptType" placeholder="请选择" style="width:220px" clearable :size="$store.state.size">
             <el-option
               v-for="item in $store.state.mechanismType"
               :key="item.value"
@@ -22,7 +22,7 @@
         <el-form-item
           label="机构等级"
         >
-          <el-select v-model="form.countryType" placeholder="请选择" style="width:200px" clearable :size="$store.state.size">
+          <el-select v-model="form.countryType" placeholder="请选择" style="width:220px" clearable :size="$store.state.size">
             <el-option
               v-for="item in $store.state.mechanismLv"
               :key="item.value"
@@ -34,7 +34,7 @@
         <el-form-item
           label="医院类型"
         >
-          <el-select v-model="form.hospitalType" placeholder="请选择" style="width:200px" clearable :size="$store.state.size">
+          <el-select v-model="form.hospitalType" placeholder="请选择" style="width:220px" clearable :size="$store.state.size">
             <el-option
               v-for="item in $store.state.hospitalType"
               :key="item.value"
@@ -46,7 +46,7 @@
         <el-form-item
           label="医院等级"
         >
-          <el-select v-model="form.hospitalGrade" placeholder="请选择" style="width:200px" clearable :size="$store.state.size">
+          <el-select v-model="form.hospitalGrade" placeholder="请选择" style="width:220px" clearable :size="$store.state.size">
             <el-option
               v-for="item in $store.state.hospitalLv"
               :key="item.value"
@@ -70,7 +70,7 @@
         :data="queryResult.list"
         border
         :size="$store.state.size"
-        style="width:100%;margin-top: 10px;">
+        style="width:100%;margin-top:10px;">
         <el-table-column
           type="index"
           label="序号"

@@ -15,6 +15,7 @@
             end-placeholder="结束日期"
             format="yyyy 年 MM 月"
             value-format="yyyy-MM"
+            class="input-width"
             @change="change()"
           >
           </el-date-picker>
@@ -349,7 +350,7 @@
           },
           legend: {
             data: ['甲类', '乙类', '未纳入'],
-            y: 'top'
+            y: '20px',
           },
           grid: {
             left: '3%',

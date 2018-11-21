@@ -14,6 +14,7 @@
   @import '~assets/scss/main';
   .body-warp{
      height:100%;
+    //  -webkit-font-smoothing: antialiased; 
    }
   .fade-enter-active,
   .fade-leave-active {

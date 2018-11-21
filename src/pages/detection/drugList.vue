@@ -5,7 +5,7 @@
         <el-form-item
           label="医保药物"
         >
-          <el-select v-model="searchForm.medicalInsuranceType" placeholder="请选择" style="width:200px" size="small">
+          <el-select v-model="searchForm.medicalInsuranceType" placeholder="请选择" clearable style="width:200px" size="small">
             <el-option
               v-for="item in $store.state.medications"
               :key="item.value"
@@ -17,7 +17,7 @@
         <el-form-item
           label="谈判药物"
         >
-          <el-select v-model="searchForm.countryVarietiesNegotialStatus" placeholder="请选择" style="width:200px" size="small">
+          <el-select v-model="searchForm.countryVarietiesNegotialStatus" placeholder="请选择" clearable style="width:200px" size="small">
             <el-option
               v-for="item in $store.state.yesOrNo"
               :key="item.value"
@@ -29,7 +29,7 @@
         <el-form-item
           label="基本药物"
         >
-          <el-select v-model="searchForm.countryBasicDrugStatus" placeholder="请选择" style="width:200px" size="small">
+          <el-select v-model="searchForm.countryBasicDrugStatus" placeholder="请选择" clearable style="width:200px" size="small">
             <el-option
               v-for="item in $store.state.yesOrNo"
               :key="item.value"
@@ -41,7 +41,7 @@
         <el-form-item
           label="国内外范围"
         >
-          <el-select v-model="searchForm.hospitalGrade" placeholder="请选择" style="width:200px" size="small">
+          <el-select v-model="searchForm.hospitalGrade" placeholder="请选择" style="width:200px"clearable size="small">
             <el-option
               v-for="item in $store.state.national"
               :key="item.value"
@@ -53,7 +53,7 @@
         <el-form-item
           label="医院类型"
         >
-          <el-select v-model="searchForm.hospitalGrade" placeholder="请选择" style="width:200px" size="small">
+          <el-select v-model="searchForm.hospitalGrade" placeholder="请选择" style="width:200px"clearable  size="small">
             <el-option
               v-for="item in $store.state.hospitalLv"
               :key="item.value"
@@ -65,7 +65,7 @@
         <el-form-item
           label="医院等级"
         >
-          <el-select v-model="searchForm.medicalInsuranceType" placeholder="请选择" style="width:200px" size="small">
+          <el-select v-model="searchForm.medicalInsuranceType" placeholder="请选择" style="width:200px" clearable size="small">
             <el-option
               v-for="item in $store.state.hospitalLv"
               :key="item.value"

@@ -85,8 +85,10 @@
           label="文件数量">
         </el-table-column>
         <el-table-column
-          prop="uploadStatus"
           label="上报状态">
+          <template slot-scope="scope">
+            <span>{{scope.row.uploadStatus | uploadStatus}}</span>
+          </template>
         </el-table-column>
         <el-table-column
           prop="checkStatus"

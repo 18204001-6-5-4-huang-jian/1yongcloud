@@ -125,6 +125,7 @@
      	    	   	  this.options = res.result;
      	    	   }
            })
+           var roleId = '';
            this.$fetch.api_system.getUserInfo({uid:this.$route.query.uid}).then((res)=>{
                if(res.code === "200"){
                 //获取用户详情信息展示
@@ -135,13 +136,13 @@
                 this.ruleForm.tel = res.result.userPO.tel;
                 this.ruleForm.deptType = res.result.userRole.deptType;
                 this.ruleForm.deptId = res.result.userRole.deptId;
-                this.ruleForm.roleId = res.result.userRole.roleId;
+                roleId = res.result.userRole.roleId;//所属机构角色
                 this.userRoleUid = res.result.userRole.uid;
                }
                //展示机构角色
                for(let i in this.options){
-                 if(this.options[i].uid == this.ruleForm.roleId){
-                   this.ruleForm.roleId = this.options[i].name;
+                 if(roleId == this.options[i].uid){
+                   this.ruleForm.roleId = this.options[i].name;//所属机构角色
                  }
                }
                 //获取所属机构

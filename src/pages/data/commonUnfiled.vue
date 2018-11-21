@@ -14,7 +14,7 @@
           label="数据年份"
           v-if="searchForm.batchType == '1'"
         >
-          <el-select v-model="searchForm.batchYear"  placeholder="请选择" style="width:120px" :size="$store.state.size">
+          <el-select v-model="searchForm.batchYear"  placeholder="请选择" style="width:120px" clearable :size="$store.state.size">
             <el-option
               v-for="item in $store.state.optionsYear"
               :key="item.value"
@@ -27,7 +27,7 @@
           label="数据年份"
           v-if="searchForm.batchType == '0'"
         >
-          <el-select v-model="searchForm.batchYear"  placeholder="请选择" style="width:120px" :size="$store.state.size">
+          <el-select v-model="searchForm.batchYear"  placeholder="请选择" style="width:120px" clearable :size="$store.state.size">
             <el-option
               v-for="item in $store.state.optionsYear1"
               :key="item.value"
@@ -40,7 +40,7 @@
           label="数据月份"
           v-if="searchForm.batchType == '1'"
         >
-          <el-select v-model="searchForm.batchMonth"  placeholder="请选择" style="width: 120px;" :size="$store.state.size">
+          <el-select v-model="searchForm.batchMonth"  placeholder="请选择" style="width: 120px;" clearable size="$store.state.size">
             <el-option
               v-for="item in $store.state.optionsMonth"
               :key="item.value"

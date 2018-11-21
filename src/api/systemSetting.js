@@ -107,6 +107,15 @@ export const updateUser = function(data){
    })
 }
 
+//重置密码
+export const resetPwd = function(data){
+  return fetch({
+    url:'/odmapi/user/reset/password',
+    method:'post',
+    data
+  })
+}
+
 //查看角色列表
 export const getRoleList = function(data){
   return fetch({
@@ -150,4 +159,5 @@ export const getRoleInfo = function(data){
     data
    })
 }
+
 

@@ -5,7 +5,7 @@
         <el-form-item
           label="校验状态"
         >
-          <el-select v-model="searchForm.checkStatus"  placeholder="请选择校验状态" style="width:200px" :size="$store.state.size">
+          <el-select v-model="searchForm.checkStatus"  placeholder="请选择校验状态" style="width:200px" clearable :size="$store.state.size">
             <el-option
               v-for="item in $store.state.checkStatus"
               :key="item.value"
@@ -17,7 +17,7 @@
         <el-form-item
           label="通过情况"
         >
-          <el-select v-model="searchForm.checkSuccessStatus"  placeholder="请选择通过情况" style="width:200px" :size="$store.state.size">
+          <el-select v-model="searchForm.checkSuccessStatus"  placeholder="请选择通过情况" style="width:200px" clearable :size="$store.state.size">
             <el-option
               v-for="item in $store.state.checkSuccessStatus"
               :key="item.value"
@@ -29,7 +29,7 @@
         <el-form-item
           label="文件名称"
         >
-          <el-select v-model="searchForm.taskName"  placeholder="请选择文件名称" style="width:200px" :size="$store.state.size">
+          <el-select v-model="searchForm.taskName"  placeholder="请选择文件名称" style="width:200px" clearable :size="$store.state.size">
             <el-option
               v-for="item in $store.state.files"
               :key="item.value"

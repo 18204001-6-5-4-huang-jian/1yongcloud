@@ -328,8 +328,10 @@
             this.$nextTick().then(()=>{
               this.queryResult = {}
               this.queryResult = response.result
-              option.series[0].data = JSON.parse(response.result.value);
-              option.yAxis.data = JSON.parse(response.result.name);
+              if(response.result.value){
+                option.series[0].data = JSON.parse(response.result.value);
+                option.yAxis.data = JSON.parse(response.result.name);
+              }
               this.option = option
             })
 

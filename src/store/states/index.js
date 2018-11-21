@@ -14,8 +14,8 @@ import {localStorage} from 'common/storage'
 export default {
   //用户信息和是否登录
   user_info: localStorage.get('user_info'),
-
-
+  menu_state:false,
+  messageCount:'',
 
 
    size:'',//medium / small / mini
@@ -230,10 +230,6 @@ export default {
     {
       label:'师级',
       value:8,
-    },
-    {
-      label:'直辖市属',
-      value:3,
     },
   ],
   //医院等级

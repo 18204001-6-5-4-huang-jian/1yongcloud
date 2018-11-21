@@ -156,7 +156,7 @@
                       label: {
                         show: true,
                         textStyle: {
-                          color: '#fff'
+                          color: '#fff',
                         }
                       }
 //                   label:{show:true}

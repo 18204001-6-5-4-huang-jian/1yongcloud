@@ -35,12 +35,23 @@
           </el-form>
           <el-button type="primary" @click="submitForm('ruleForm')" class="submit-button">登录</el-button>
           <div class="forget-password-button">
-            <el-button type="text">忘记密码？</el-button>
+            <el-button type="text" @click="forgetState = true ">忘记密码？</el-button>
           </div>
         </div>
       </el-main>
       <el-footer class="el-footer">为了提升您更好的使用体验，请使用谷歌浏览器、360或者IE10以上的浏览器，否则部分功能您可能无法正常使用</el-footer>
     </el-container>
+    <el-dialog
+      title="忘记密码"
+      :visible.sync="forgetState"
+      width="30%"
+      center>
+      <div style="font-size: 16px;text-align: center;">请通过邮箱natdss@cicams.ac.cn联系管理员，为您重置密码。</div>
+      <span slot="footer" class="dialog-footer">
+        <!--<el-button @click="forgetState = false">取 消</el-button>-->
+        <el-button type="primary" @click="forgetState = false">关 闭</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -72,6 +83,7 @@
           pwd: '',
           capText: '',
         },
+        forgetState:false,
         imgUrl:'',
         load_data: false,
         rules: {
@@ -173,9 +185,10 @@
   }
 
   .login .el-footer {
+    color: #FB7707;
     height: 60px;
     line-height: 60px;
-    font-size: 14px;
+    font-size: 16px;
     text-align: center;
   }
 

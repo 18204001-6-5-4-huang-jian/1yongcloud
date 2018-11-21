@@ -4,23 +4,23 @@
      <div class="search">
        <el-form :inline="true" :model="ruleForm" ref="ruleForm" :rules="rules" class="demo-form-inline">
          <el-form-item label="消息标题">
-           <el-input v-model="ruleForm.title" placeholder="消息标题" :size="$store.state.size"></el-input>
+           <el-input v-model="ruleForm.title" placeholder="消息标题" clearable :size="$store.state.size" style="width: 220px"></el-input>
          </el-form-item>
          <el-form-item label="接收时间">
            <el-col :span="11">
              <el-form-item>
-               <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.startAcceptTime" style="width: 100%;" value-format="yyyy-MM-dd" :size="$store.state.size"></el-date-picker>
+               <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.startAcceptTime" style="width: 220px;" clearable value-format="yyyy-MM-dd" :size="$store.state.size"></el-date-picker>
              </el-form-item>
            </el-col>
            <el-col class="line" :span="2" style="padding-left:8px;">至</el-col>
            <el-col :span="11">
              <el-form-item >
-               <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.endAcceptTime" style="width: 100%;" value-format="yyyy-MM-dd" :size="$store.state.size"></el-date-picker>
+               <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.endAcceptTime" style="width: 220px;" clearable value-format="yyyy-MM-dd" :size="$store.state.size"></el-date-picker>
              </el-form-item>
            </el-col>
          </el-form-item>
          <el-form-item label="阅读状态">
-           <el-select v-model="ruleForm.status" placeholder="阅读状态" :size="$store.state.size">
+           <el-select v-model="ruleForm.status" placeholder="阅读状态" style="width: 220px" clearable :size="$store.state.size">
              <el-option label="全部" value="0"></el-option>
              <el-option label="已读" value="1"></el-option>
              <el-option label="未读" value="2"></el-option>
@@ -149,8 +149,13 @@ import dayjs from 'dayjs'
     },
     filters:{
       formatDate(time) {
-            var date = new Date(time);
-            return dayjs(date).format('YYYY-MM-DD')
+            if(time){
+              var date = new Date(time);
+              return dayjs(date).format('YYYY-MM-DD')
+            }else{
+               return ''
+            }
+
         }
     },
     methods: {
@@ -167,7 +172,7 @@ import dayjs from 'dayjs'
            const res = await this.$fetch.api_msgManagement.getMsgList(this.ruleForm);
            // console.log(res);
            if(res.code === "200"){
-                this.queryResult = res.result;
+             this.queryResult = res.result;
            }else{
                 this.$message({
                    showClose:true,
@@ -261,15 +266,6 @@ import dayjs from 'dayjs'
     }
     .pagination-container{
       text-align: right;
-    }
-    .message-notice-container .search{
-      background: #ffffff;
-      padding-top:10px;
-      padding-bottom:10px;
-      padding-left:20px;
-    }
-    .message-notice-container .el-form-item{
-      margin-bottom:0px;
     }
     .dataShow-table{
       background: #ffffff;

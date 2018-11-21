@@ -6,12 +6,12 @@
         <el-form-item
           label="医院名称"
         >
-          <el-input placeholder="请输入机构名称"  v-model="searchForm.hosName" :size="$store.state.size"></el-input>
+          <el-input placeholder="请输入机构名称"  v-model="searchForm.hosName" :size="$store.state.size" clearable  class="input-width"></el-input>
         </el-form-item>
         <el-form-item
           label="隶属关系"
         >
-          <el-select v-model="searchForm.relation" placeholder="请选择" style="width:200px" :size="$store.state.size">
+          <el-select v-model="searchForm.relation" placeholder="请选择" class="input-width" clearable :size="$store.state.size">
             <el-option
               v-for="item in $store.state.subjectionRelation"
               :key="item.value"
@@ -23,7 +23,7 @@
         <el-form-item
           label="所在省"
         >
-          <el-select v-model="searchForm.province" placeholder="请选择" style="width:200px" :size="$store.state.size"
+          <el-select v-model="searchForm.province" placeholder="请选择" class="input-width" clearable :size="$store.state.size"
                      @change="provinceChange">
             <el-option
               v-for="item in provinceList"
@@ -36,7 +36,7 @@
         <el-form-item
           label="所在市"
         >
-          <el-select v-model="searchForm.city" placeholder="请选择" style="width:200px" :size="$store.state.size" @change="cityChange">
+          <el-select v-model="searchForm.city" placeholder="请选择"  class="input-width" clearable :size="$store.state.size" @change="cityChange">
             <el-option
               v-for="item in cityList"
               :key="item.code"
@@ -48,7 +48,7 @@
         <el-form-item
           label="所在区"
         >
-          <el-select v-model="searchForm.district" placeholder="请选择" style="width:200px" :size="$store.state.size">
+          <el-select v-model="searchForm.district" placeholder="请选择"  class="input-width" clearable :size="$store.state.size">
             <el-option
               v-for="item in areaList"
               :key="item.code"
@@ -60,7 +60,7 @@
         <el-form-item
           label="医院等级"
         >
-          <el-select v-model="searchForm.grade" placeholder="请选择" style="width:200px" :size="$store.state.size">
+          <el-select v-model="searchForm.grade" placeholder="请选择"  class="input-width" clearable :size="$store.state.size">
             <el-option
               v-for="item in $store.state.hospitalLv"
               :key="item.value"
@@ -72,7 +72,7 @@
         <el-form-item
           label="医院类型"
         >
-          <el-select v-model="searchForm.type" placeholder="请选择" style="width:200px" :size="$store.state.size">
+          <el-select v-model="searchForm.type" placeholder="请选择"  class="input-width" clearable :size="$store.state.size">
             <el-option
               v-for="item in $store.state.hospitalType"
               :key="item.value"
@@ -155,23 +155,27 @@
     },
     methods: {
       async provinceChange(code){
-        this.searchForm.city = ''
-        this.searchForm.district = ''
-        //请求市数据
-        const res = await this.$fetch.api_system.getLinkageList(code);
-        if (res.code === "200") {
-          // this.ruleForm.deptCity = "";
-          this.cityList = res.result;
-        }
+          if(code){
+            this.searchForm.city = ''
+            this.searchForm.district = ''
+            //请求市数据
+            const res = await this.$fetch.api_system.getLinkageList(code);
+            if (res.code === "200") {
+              // this.ruleForm.deptCity = "";
+              this.cityList = res.result;
+            }
+          }
       },
       async cityChange(code){
-        this.searchForm.district = ''
-        //请求区数据
-        const res = await this.$fetch.api_system.getLinkageList(code);
-        if (res.code === "200") {
-          // this.ruleForm.deptDistrict = "";
-          this.areaList = res.result;
-        }
+          if(code){
+            this.searchForm.district = ''
+            //请求区数据
+            const res = await this.$fetch.api_system.getLinkageList(code);
+            if (res.code === "200") {
+              // this.ruleForm.deptDistrict = "";
+              this.areaList = res.result;
+            }
+          }
       },
       async getProvince(){
         //请求数据 获取省
@@ -211,6 +215,9 @@
     margin-top: 10px;
     height: 30px;
   ;
+  }
+  .input-width{
+    width: 220px;
   }
 </style>
 

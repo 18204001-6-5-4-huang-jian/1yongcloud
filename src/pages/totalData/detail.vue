@@ -194,6 +194,7 @@
                     :to="{
                  path:'/totalData/detailShow',query:{
                      batchType:0,
+                     uid:scope.row.uid,
                      batchDataTime:scope.row.batchDataTime,
                      deptId:$route.query.deptId,
                      hosName: $route.query.hosname,

@@ -5,12 +5,12 @@
        <el-form-item
           label="用户名称"
         >
-         <el-input  v-model="form.loginName" placeholder="请输入用户名称" clearable :size="$store.state.size"></el-input>
+         <el-input  v-model="form.loginName" placeholder="请输入用户名称" clearable style="width: 220px;" :size="$store.state.size"></el-input>
         </el-form-item>
         <el-form-item
           label="机构类型"
         >
-          <el-select v-model="form.deptType"  placeholder="请选择" style="width:120px" clearable :size="$store.state.size">
+          <el-select v-model="form.deptType"  placeholder="请选择" style="width:220px" clearable :size="$store.state.size">
             <el-option
               v-for="item in $store.state.mechanismType"
               :key="item.value"
@@ -22,7 +22,7 @@
         <el-form-item
           label="机构等级"
         >
-          <el-select v-model="form.countryType"  placeholder="请选择" style="width:120px" clearable :size="$store.state.size">
+          <el-select v-model="form.countryType"  placeholder="请选择" style="width:220px" clearable :size="$store.state.size">
             <el-option
               v-for="item in $store.state.mechanismLv"
               :key="item.value"
@@ -34,7 +34,7 @@
         <el-form-item
           label="医院类型"
         >
-          <el-select v-model="form.hospitalType"  placeholder="请选择" style="width:120px" clearable :size="$store.state.size">
+          <el-select v-model="form.hospitalType"  placeholder="请选择" style="width:220px" clearable :size="$store.state.size">
             <el-option
               v-for="item in $store.state.hospitalType"
               :key="item.value"
@@ -46,7 +46,7 @@
         <el-form-item
           label="医院等级"
         >
-          <el-select v-model="form.hospitalGrade"  placeholder="请选择" style="width:120px" clearable :size="$store.state.size">
+          <el-select v-model="form.hospitalGrade"  placeholder="请选择" style="width:220px" clearable :size="$store.state.size">
             <el-option
               v-for="item in $store.state.hospitalLv"
               :key="item.value"
@@ -71,7 +71,7 @@
         :data="queryResult.list"
         :size="$store.state.size"
         border
-        style="width: 100%">
+        style="width:100%;margin-top:10px;">
         <el-table-column
           type="index"
           label="序号"
@@ -99,9 +99,10 @@
         <el-table-column
           fixed="right"
           label="操作"
-          width="100">
+          width="180">
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="handleRead(scope.row)">查看</el-button>
+            <el-button type="text" size="small" @click="resetPwd(scope.row)">重置密码</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -214,6 +215,21 @@
         })
 
       },
+      async resetPwd(row){
+        //  console.log(row.uid);
+         const res = await this.$fetch.api_system.resetPwd({uid:row.uid});
+         if(res.code === '200'){
+             this.$message({
+               type:'success',
+               message:'重置密码成功，密码初始值为000000'
+             })
+         }else{
+           this.$message({
+              type:'error',
+              message:'对不起，重置密码失败'
+           })
+         }
+      },
       submitForm(formName){
           this.$refs[formName].validate(async (valid) => {
             if(valid){
@@ -250,8 +266,8 @@
     text-align: right;
   }
   .button-group{
-    height: 60px;
-    line-height:60px;
+    /* height: 60px; */
+    /* line-height:60px; */
     padding-right:20px;
   }
 </style>

@@ -35,7 +35,7 @@
         <el-form-item
           label="医保药物"
         >
-          <el-select v-model="searchForm.medicalInsuranceType" clearable placeholder="请选择" style="width:200px"
+          <el-select v-model="searchForm.medicalInsuranceType" clearable placeholder="请选择"  style="width:200px"
                      :size="$store.state.size">
             <el-option
               v-for="item in $store.state.medications"

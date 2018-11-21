@@ -23,56 +23,59 @@
       </el-row>
       <el-row>
         <div class="binding">
-          <el-col :span="12">
-            <div class="title">医院药品信息</div>
-            <el-row :gutter="20">
-              <el-col :span="8">
-                通用名：{{formData.genericName}}
-              </el-col>
-              <el-col :span="8">
-                规格：{{formData.specifications}}
-              </el-col>
-              <el-col :span="8">
-                批准文号：{{formData.approvalNumber}}
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="8">
-                商品名：{{formData.productName}}
-              </el-col>
-              <el-col :span="8">
-                剂型：{{formData.dosageForm}}
-              </el-col>
-              <el-col :span="8">
-                注册证号：{{formData.registrationNumber}}
-              </el-col>
-            </el-row>
-          </el-col>
-          <el-col :span="12">
-            <div class="title">标准库药品信息</div>
-            <el-row :gutter="20">
-              <el-col :span="8">
-                通用名：{{formData1.genericName}}
-              </el-col>
-              <el-col :span="8">
-                规格：{{formData1.specifications}}
-              </el-col>
-              <el-col :span="8">
-                批准文号：{{formData1.approvalNumber}}
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="8">
-                商品名：{{formData1.productName}}
-              </el-col>
-              <el-col :span="8">
-                剂型：{{formData1.dosageForm}}
-              </el-col>
-              <el-col :span="8">
-                注册证号：{{formData1.registrationNumber}}
-              </el-col>
-            </el-row>
-          </el-col>
+          <el-row>
+            <el-col :span="12">
+              <div class="title titlecolor">医院药品信息</div>
+              <el-row :gutter="20">
+                <el-col :span="8">
+                  通用名：<span>{{formData.genericName}}</span>
+                </el-col>
+                <el-col :span="8">
+                  规格：<span>{{formData.specifications}}</span>
+                </el-col>
+                <el-col :span="8">
+                  批准文号：<span>{{formData.approvalNumber}}</span>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="8">
+                  商品名：<span>{{formData.productName}}</span>
+                </el-col>
+                <el-col :span="8">
+                  剂型：<span>{{formData.dosageForm}}</span>
+                </el-col>
+                <el-col :span="8">
+                  注册证号：<span>{{formData.registrationNumber}}</span>
+                </el-col>
+              </el-row>
+            </el-col>
+            <el-col :span="12">
+              <div class="title titlecolor">标准库药品信息</div>
+              <el-row :gutter="20">
+                <el-col :span="8">
+                  通用名：<span>{{formData1.genericName}}</span>
+                </el-col>
+                <el-col :span="8">
+                  规格：<span>{{formData1.specifications}}</span>
+                </el-col>
+                <el-col :span="8">
+                  批准文号：<span>{{formData1.approvalNumber}}</span>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="8">
+                  商品名：<span>{{formData1.productName}}</span>
+                </el-col>
+                <el-col :span="8">
+                  剂型：<span>{{formData1.dosageForm}}</span>
+                </el-col>
+                <el-col :span="8">
+                  注册证号：<span>{{formData1.registrationNumber}}</span>
+                </el-col>
+              </el-row>
+            </el-col>
+          </el-row>
+
           <el-row class="button-group">
             <el-button type="primary" @click="submitForm(1)" :size="$store.state.size">确定</el-button>
             <el-button type="primary"  :size="$store.state.size">取消</el-button>
@@ -689,7 +692,7 @@
   }
   .button-group{
     text-align: right;
-    margin-top:30px;
+    margin-top:20px;
   }
    .top-title{
      text-align: center;
@@ -704,6 +707,9 @@
     padding-top:10px;
     border:1px solid #e5e5e5;
     border-bottom:none;
+  }
+  .titlecolor{
+    color: #0084FE;
   }
 </style>
 

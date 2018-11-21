@@ -7,7 +7,6 @@
 			<el-button type="primary" style="margin-right:100px;" @click="returnBack()">返回</el-button>
 		</div>
 	</div>
-	</div>
 </template>
 <script>
 export default{
@@ -24,6 +23,15 @@ export default{
            const res = await this.$fetch.api_msgManagement.getMsgDetail({uid:this.$route.query.uid});
            if(res.code === "200"){
               this.result = res.result;
+             this.$fetch.api_home.countyMeaasge()
+               .then((res) => {
+                 if(res.result == 0){
+                   this.$store.state.messageCount = ''
+                 }else{
+                   this.$store.state.messageCount = res.result
+                 }
+
+               })
            }else{
            	   this.$message({
            	   	   type:'error',
@@ -31,6 +39,7 @@ export default{
            	   	   message:'获取该条详情失败'
            	   })
            }
+
 		},
 		methods:{
               returnBack(){

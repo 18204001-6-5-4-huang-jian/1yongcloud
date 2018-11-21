@@ -49,7 +49,7 @@
       </span>
       <span class="button-group">
         <router-link to="/basicdata/matching">
-            <el-button type="primary" :size="$store.state.size">匹配</el-button>
+            <el-button type="primary" :size="$store.state.size">继续匹配</el-button>
         </router-link>
          <el-button type="primary" :size="$store.state.size" @click="exportData()">导出</el-button>
          <el-button type="primary" :size="$store.state.size" @click="cancelData">取消匹配</el-button>

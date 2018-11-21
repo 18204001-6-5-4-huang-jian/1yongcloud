@@ -42,7 +42,7 @@
             <el-table-column width="80" property="messageType" label="类型"></el-table-column>
             <el-table-column width="80" property="messageCode" label="代码"></el-table-column>
             <!--<el-table-column width="80" property="fieldCheckStatus" label="校验情况"></el-table-column>-->
-            <el-table-column  property="message" label="描述"></el-table-column>
+            <el-table-column  property="msgs" label="描述"></el-table-column>
           </el-table>
           <div class="block">
             <el-pagination

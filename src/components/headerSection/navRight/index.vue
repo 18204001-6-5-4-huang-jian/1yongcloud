@@ -1,16 +1,21 @@
 <template>
   <div class="nav-right">
-    <!--<el-badge :is-dot="elBadge" class="item">-->
     <router-link to="/message/notice">
-      <i class="iconfont icon-xiaoxi" v-if="$store.state.user_info.user.deptType == 2"></i>
+       <span>
+         <el-badge :value="$store.state.messageCount" :max="99" class="item">
+             <i class="iconfont icon-xiaoxi" :style="$store.state.messageCount>0?'margin-right: -20px':'margin-right:0px' "></i>
+          </el-badge>
+       </span>
     </router-link>
-    <!--</el-badge>-->
     <router-link to="/organ/material">
-      <i class="iconfont icon-shezhi border"></i>
+      <span>
+         <i class="iconfont icon-shezhi border"></i>
+      </span>
     </router-link>
 
-     <span class="user-name border">{{$store.state.user_info.user.loginName?$store.state.user_info.user.loginName:''}} <img src="../image/avatar-1.jpg" alt="" class="user-avatar"></span>
-     <el-button size="mini" type="primary" class="quit" @click="user_out()">退出</el-button>
+    <span class="user-name border">{{$store.state.user_info.user.loginName ? $store.state.user_info.user.loginName : ''}} <img
+      src="../image/avatar-1.jpg" alt="" class="user-avatar"></span>
+    <el-button size="mini" type="primary" class="quit" @click="user_out()">退出</el-button>
   </div>
 </template>
 <script type="text/javascript">
@@ -21,7 +26,8 @@
     data(){
       return {
         //圆点是否显示
-        elBadge:true,
+        elBadge: true,
+        messageCount: ''
       }
     },
     computed: {
@@ -29,7 +35,17 @@
         get_user_info: GET_USER_INFO
       })
     },
-    methods:{
+    created(){
+      this.$fetch.api_home.countyMeaasge()
+        .then((res) => {
+          if(res.result == 0){
+            this.$store.state.messageCount = ''
+          }else{
+            this.$store.state.messageCount = res.result
+          }
+        })
+    },
+    methods: {
       ...mapActions({
         set_user_info: SET_USER_INFO
       }),
@@ -53,48 +69,58 @@
   }
 </script>
 <style scoped>
-  .nav-right{
+  .nav-right {
     float: right;
     height: 50px;
     line-height: 50px;
     margin-right: 20px;
   }
 
-  .iconfont{
+  .iconfont {
     color: #cdcdcd;
   }
-  .user-avatar{
-    height:28px;
-    width:28px;
-    line-height:50px;
+
+  .user-avatar {
+    height: 28px;
+    width: 28px;
+    line-height: 50px;
     border-radius: 100%;
-    margin-left:10px;
+    margin-left: 10px;
   }
-  .user-name{
-    font-size:14px;
+
+  .user-name {
+    font-size: 14px;
     color: #787878;
     padding-right: 10px;
-    border-right:1px solid #e5e5e5;
+    border-right: 1px solid #e5e5e5;
   }
-  .border{
+
+  .border {
     border-left: 1px solid #e5e5e5;
     margin-left: 10px;
     padding-left: 10px;
   }
-  .quit{
+
+  .quit {
     margin-left: 8px;
   }
-  .nav-right .iconfont{
+
+  .nav-right .iconfont {
     cursor: pointer;
+  }
+  .item-icon{
+    display: inline-block;
+    width: 40px;
   }
 </style>
 <style>
-  .nav-right .el-button--mini{
-    padding:4px 8px!important;
+  .nav-right .el-button--mini {
+    padding: 4px 8px !important;
   }
-  .nav-right .el-badge__content{
-    position: absolute;
-    top: 18px;
-    left: -3px;
+  .nav-right .el-badge__content.is-fixed{
+    position: relative;
+    left:12px;
+    top:-4px;
+    transform:scale(0.9);
   }
 </style>

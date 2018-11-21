@@ -1,11 +1,11 @@
 <template>
   <div class="password content-page">
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" labelWidth="100px" class="demo-ruleForm">
-      <el-form-item label="旧密码" prop="oldWord">
+      <el-form-item label="旧密码:" prop="oldWord">
         <el-input v-model="ruleForm.oldWord" type="password" ref="oldWord"></el-input>
         <span class="password-notice">请输入旧密码</span>
       </el-form-item>
-      <el-form-item label="新密码" prop="newWord">
+      <el-form-item label="新密码:" prop="newWord">
         <el-input v-model="ruleForm.newWord" type="password" ref="newWord" @input="newPswwordChange()"></el-input>
         <span class="password-notice">请输入新密码，需包含大小写字母、数字或其他符号中至少2种且长度不小于6位</span>
       </el-form-item>
@@ -15,7 +15,7 @@
         <div class="progress-bar-item3" v-if="strongState == 1"></div>
       </div>
       <span style="margin-left: 20px;">{{strongState | strongState}}</span>
-      <el-form-item label="确认新密码" prop="sureWord">
+      <el-form-item label="确认新密码:" prop="sureWord">
         <el-input v-model="ruleForm.sureWord" type="password" ref="sureWord"></el-input>
         <span class="password-notice">请再次输入新密码</span>
       </el-form-item>

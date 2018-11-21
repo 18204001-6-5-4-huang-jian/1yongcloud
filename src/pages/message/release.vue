@@ -2,7 +2,7 @@
   <div class="message-release-container">
    <el-form ref="form" :model="form" :rules="rules" label-width="80px">
   <el-form-item label="消息标题" prop="title">
-    <el-input v-model="form.title" placeholder="请输入消息标题" size="small"></el-input>
+    <el-input v-model="form.title" placeholder="请输入消息标题" :size="$store.state.size"></el-input>
     <span class="span">请输入不超过20个字的消息标题</span>
   </el-form-item>
   <el-form-item label="消息正文">
@@ -69,9 +69,9 @@
           // console.log(content)；
        },
        filterHTMLTag(msg){
-        var msg = msg.replace(/<\/?[^>]*>/g, ''); //去除HTML
-        msg = msg.replace(/[|]*\n/, '') //去除行尾空格
-        msg = msg.replace(/&npsp;/ig, ''); //去掉npsp
+//        var msg = msg.replace(/<\/?[^>]*>/g, ''); //去除HTML
+//        msg = msg.replace(/[|]*\n/, '') //去除行尾空格
+//        msg = msg.replace(/&npsp;/ig, ''); //去掉npsp
         return msg;
        },
        handleSubmit(formName){
@@ -79,7 +79,6 @@
           if (valid) {
              let content = this.$refs.editor.getUEContent();
              if (content){
-                let _content = this.filterHTMLTag(content);
                 const list = this.form.platform;
                 for(let i in list){
                   if(list[i] == '系统平台'){
@@ -90,7 +89,7 @@
                 }
                 const dataObj = {
                   title:this.form.title,
-                  context:_content,
+                  context:content,
                   systemType:this.systemType,
                   smsType:this.smsType
 
@@ -107,7 +106,6 @@
                 //富文本为空
                 this.$message({
                    type:'error',
-                   showClose:true,
                    message:'请输入消息正文'
                 })
              }

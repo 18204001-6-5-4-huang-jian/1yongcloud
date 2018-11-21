@@ -15,12 +15,28 @@
     <!-- 设置描述 -->
     <meta name="Description" content="全国抗肿瘤药物临床应用监测网"/>
     <!-- 启用360浏览器的极速模式(webkit) -->
-    <!--<meta name="renderer" content="webkit">-->
+    <meta name="renderer" content="webkit">
     <!-- 避免IE使用兼容模式 -->
-    <!--<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">-->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
   </head>
   <body>
     <div id="app"></div>
-    <!-- built files will be auto injected -->
   </body>
+  <script>
+    (function(window) {
+      var theUA = window.navigator.userAgent.toLowerCase();
+      console.log(theUA,1111)
+      if ((theUA.match(/msie\s\d+/) && theUA.match(/msie\s\d+/)[0]) || (theUA.match(/trident\s?\d+/) && theUA.match(/trident\s?\d+/)[0])) {
+        var ieVersion = theUA.match(/msie\s\d+/)[0].match(/\d+/)[0] || theUA.match(/trident\s?\d+/)[0];
+        if (ieVersion < 11) {
+          var str = "sorry，您的浏览器版本过低，请使用谷歌、360极速模式或者IE10以上浏览器。"
+          var str2 = ""
+          document.writeln("<pre style='text-align:center;color:#000000;background-color:#ffffff; height:100%;border:0;position:fixed;top:0;left:0;width:100%;z-index:1234'>" +
+            "<h2 style='padding-top:200px;margin:0'><strong>" + str + "<br/></strong></h2><p>" +
+            str2 + "</p><h2 style='margin:0'><strong>如果你的使用的是双核浏览器,请切换到极速模式访问<br/></strong></h2></pre>");
+          document.execCommand("Stop");
+        };
+      }
+    })(window);
+  </script>
 </html>

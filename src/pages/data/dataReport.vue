@@ -119,7 +119,12 @@
       </el-upload>
     </div>
     <div class="toop-notice">
-      本系统目前只支持以下几种格式的文件上报：1.上报文件格式支持txt，csv，xls，xlsx，；2.采用UTF-8编码；3.各数据字段以tab键分割；4.前一个月数据需在本月10号前完成上报
+      温馨提示：<br><br>
+
+      1、上报文件格式目前支持：xls、xlsx、csv，保存文件时，请选择UTF-8编码。 <br>
+      2、历史数据（2013年1月1日-2017年12月31日）集中上报，按年份上报，截止日期，以通报为准。<br>
+      3、2018年及以后数据，分批次上报，按月份上报，截止日期，已通知为准。<br>
+      4、数据上报前，务必请仔细核对“药品字典管理->已匹配”中的数据，从而数据保证成功上传。点击“ <router-link to="/basicdata/result"><span style="color: #0084FE;font-size: 14px;font-weight: 700;">前往</span></router-link>”
     </div>
   </div>
 </template>
@@ -287,10 +292,8 @@
 
 <style scoped>
   .toop-notice {
-    line-height: 40px;
-    height: 40px;
     margin-top: 10px;
-    color: red;
+    font-size: 14px;
   }
 
   .upload {

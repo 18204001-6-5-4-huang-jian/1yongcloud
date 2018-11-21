@@ -302,7 +302,7 @@ const router = new VueRouter({
 //         next({path: '/'})
 //       }
 //       if (is_login && toName !== 'task') {
-//         if (toName !== 'password' && toName !== 'login' && toName !== 'matching') {
+//         if (toName !== 'password' && toName !== 'login' && toName !== 'matching'&& toName !== 'help'&& toName !== 'result') {
 //           for (let i in store.state.user_info.task) {
 //             if (store.state.user_info.task[i] === 2) {
 //               next({name: 'task'})

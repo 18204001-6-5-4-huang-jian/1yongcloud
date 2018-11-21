@@ -279,7 +279,7 @@
               name: '金额',
               type: 'bar',
               stack: '总量',
-              barWidth : 30,
+              barWidth : 20,
               label: {
                 normal: {
                   show: true,
@@ -305,8 +305,10 @@
             this.echartState = true
             this.$nextTick().then(()=>{
             this.queryResult = response.result
-            option.series[0].data  = JSON.parse(response.result.value);
-            option.yAxis.data  =  JSON.parse(response.result.name);
+              if(response.result.value){
+                option.series[0].data  = JSON.parse(response.result.value);
+                option.yAxis.data  =  JSON.parse(response.result.name);
+              }
             this.option = option
             })
           })

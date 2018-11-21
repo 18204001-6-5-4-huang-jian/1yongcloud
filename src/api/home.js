@@ -50,3 +50,12 @@ export function byMonth(data) {
     data
   })
 }
+
+//header中消息提醒
+export function countyMeaasge(data) {
+  return fetch({
+    url: '/odmapi/meaasge/countyMeaasge',
+    method: 'post',
+    data
+  })
+}
