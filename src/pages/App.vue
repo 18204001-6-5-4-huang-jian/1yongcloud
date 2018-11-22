@@ -10,7 +10,7 @@
         </el-aside>
         <el-main>
           <main-content :class="['mainContain']">
-            <breadcrumb v-if=""></breadcrumb>
+            <breadcrumb></breadcrumb>
             <keep-alive>
               <router-view v-if="$route.meta.keepAlive">
                 <!-- 这里是会被缓存的视图组件，比如 Home！ -->

@@ -3,7 +3,7 @@
     <div class="search">
       <el-row class="top">
         <el-col :span="12">
-          待匹配: <span style="color: #0084FE;">{{queryResult.total}}条</span>
+          待匹配: <span style="color: #0084FE;">{{count}}条</span>
         </el-col>
         <el-col :span="12" style="text-align: right;">
           <el-upload
@@ -498,6 +498,7 @@
           total: 0,
           list: []
         },
+        count:0
       }
     },
     mounted(){
@@ -511,7 +512,6 @@
           )
             .then(response => {
               this.queryResult = response.result
-              console.log(this.$store.state.user_info.task.drugInfoContrast)
               if(this.$store.state.user_info.task.drugInfoContrast === 2){
                 this.changeTaskStatus()
               }
@@ -532,9 +532,9 @@
           )
             .then(response => {
               this.queryResult1 = response.result
-
           })
         }
+        this.getCount()
 
       },
       submitForm(count) {
@@ -554,7 +554,6 @@
                   Object.assign(this.$data.formData1, this.$options.data().formData1)
                   this.queryResult1 = []
                   this.query(1)
-
                 })
             }else{
                 this.$message({
@@ -665,6 +664,13 @@
 
       },
       handlePreview(file) {
+      },
+      //获取未匹配个数
+      getCount(){
+        this.$fetch.api_basicData.queryCountDeptDrugibrary()
+          .then(response => {
+            this.count = response.result
+          })
       },
       //保存用户任务状态
       changeTaskStatus(){

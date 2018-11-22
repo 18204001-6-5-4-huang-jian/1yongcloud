@@ -98,6 +98,11 @@
             }
             const res = await this.$fetch.api_basicData.updateRegional(dataObj);
             if (res.code === "200") {
+               //清空
+              this.ruleForm.name = '';
+              this.ruleForm.code = '';
+              this.ruleForm.remark = '';
+              this.$refs.tree.setCheckedKeys([]);
               this.$router.push({
                 path: '/basicdata/regional'
               })

@@ -6,10 +6,10 @@
        </div>
        <div>
          <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-           <el-form-item label="角色名称" prop="name">
+           <el-form-item label="角色名称:" prop="name">
              <el-input v-model="ruleForm.name" placeholder="请输入5-20个汉字" class="mechanism-input"></el-input>
            </el-form-item>
-           <el-form-item label="角色描述" prop="desc">
+           <el-form-item label="角色描述:" prop="desc">
              <el-input
                type="textarea"
                :autosize="{ minRows: 4, maxRows: 16}"
@@ -24,7 +24,7 @@
             <div>
             </div>
           </div>
-           <el-form-item label="选择权限" prop="tree">
+           <el-form-item label="选择权限:" prop="tree">
                  <el-tree
                   :data="data"
                   show-checkbox

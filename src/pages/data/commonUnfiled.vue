@@ -14,7 +14,7 @@
           label="数据年份"
           v-if="searchForm.batchType == '1'"
         >
-          <el-select v-model="searchForm.batchYear"  placeholder="请选择" style="width:120px" clearable :size="$store.state.size">
+          <el-select v-model="searchForm.batchYear"  placeholder="请选择" style="width:200px" clearable :size="$store.state.size">
             <el-option
               v-for="item in $store.state.optionsYear"
               :key="item.value"
@@ -27,7 +27,7 @@
           label="数据年份"
           v-if="searchForm.batchType == '0'"
         >
-          <el-select v-model="searchForm.batchYear"  placeholder="请选择" style="width:120px" clearable :size="$store.state.size">
+          <el-select v-model="searchForm.batchYear"  placeholder="请选择" style="width:200px" clearable :size="$store.state.size">
             <el-option
               v-for="item in $store.state.optionsYear1"
               :key="item.value"
@@ -40,7 +40,7 @@
           label="数据月份"
           v-if="searchForm.batchType == '1'"
         >
-          <el-select v-model="searchForm.batchMonth"  placeholder="请选择" style="width: 120px;" clearable size="$store.state.size">
+          <el-select v-model="searchForm.batchMonth"  placeholder="请选择" style="width: 200px;" clearable size="$store.state.size">
             <el-option
               v-for="item in $store.state.optionsMonth"
               :key="item.value"
@@ -131,57 +131,48 @@
         </el-tab-pane>
         <el-tab-pane label="2013年-2017年" name="0">
           <el-table
+            border
             :data="queryResult.list"
             :size="$store.state.size"
-            :cell-class-name="tableRowClassName"
-            @cell-mouse-leave="cellMouseLeave"
-            @cell-mouse-enter="cellMouseEnter"
-            :span-method="objectSpanMethod"
             style="width: 100%">
-            <el-table-column label="一期数据">
-              <el-table-column
-                prop="batchDataTime"
-                label="数据时间"
-                width="150">
-              </el-table-column>
-              <el-table-column
-                label="开始上报时间"
-              >
-                <template slot-scope="scope">
-                  <span>{{scope.row.batchStartTime | dateFormater}}</span>
-                </template>
-              </el-table-column>
-              <el-table-column
-                label="截止上报时间"
-              >
-                <template slot-scope="scope">
-                  <span>{{scope.row.batchEndTime | dateFormater}}</span>
-                </template>
-              </el-table-column>
-              <el-table-column
-                prop="uploadProgress"
-                label="上报任务数"
-              >
-              </el-table-column>
-              <el-table-column
-                prop="checkProgress"
-                label="校验中文件数"
-              >
-              </el-table-column>
-              <el-table-column
-                prop="checkSuccessProgress"
-                label="校验通过文件数"
-              >
-              </el-table-column>
-              <el-table-column
-                prop="checkErrorProgress"
-                label="校验未通过文件数"
-              >
-              </el-table-column>
+            <el-table-column
+              prop="batchDataTime"
+              label="数据时间"
+              width="150">
             </el-table-column>
             <el-table-column
-              label="二期数据"
-              width="120">
+              label="开始上报时间"
+            >
+              <template slot-scope="scope">
+                <span>{{scope.row.batchStartTime | dateFormater}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="截止上报时间"
+            >
+              <template slot-scope="scope">
+                <span>{{scope.row.batchEndTime | dateFormater}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="uploadProgress"
+              label="上报任务数"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="checkProgress"
+              label="校验中文件数"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="checkSuccessProgress"
+              label="校验通过文件数"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="checkErrorProgress"
+              label="校验未通过文件数"
+            >
             </el-table-column>
             <el-table-column
               label="操作">

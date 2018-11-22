@@ -17,6 +17,8 @@ const homeIndex = () => import('pages/home')
 const noPage = () => import('pages/error/404')
 //登录页
 const login = () => import('pages/user/login')
+//首次登陆重置密码
+const firstLogin = () => import('pages/resetpwd/resetpwd')
 //消息管理
 const message = () => import('pages/message')
 //消息通知
@@ -81,6 +83,8 @@ const regionalDetil = () => import('pages/basicdata/regionalDetail')
 const regionalEdit = () => import('pages/basicdata/regionalEdit')
 //机构设置
 const organ = () => import('pages/organ')
+//机构设置
+const dataDictionary = () => import('pages/dataDictionary')
 //修改资料
 const material = () => import('pages/organ/material')
 //修改密码
@@ -119,6 +123,7 @@ const routes = [
   {path: '/404', name: 'notPage', component: noPage},
   {path: '*', redirect: '/404'},
   {path: '/user/login', name: 'login', component: login, meta: {title: "登录", auth: true}},
+  {path: '/user/firstLogin', name: 'firstLogin', component: firstLogin, meta: {title: "首次登录", auth: true}},
   {
     path: '/', redirect: '/home/home', component: viewPage,
     children: [
@@ -213,12 +218,17 @@ const routes = [
         component: basicdata,
         meta: {title: "基础数据管理", auth: true},
         children: [
-          {path: '/basicdata/matching', name: 'matching', component: matching, meta: {title: "数据匹配", auth: true}},
-          {path: '/basicdata/result', name: 'result', component: result, meta: {title: "匹配结果", auth: true}},
           {path: '/basicdata/regional', name: 'regional', component: regional, meta: {title: "区域字典", auth: true}},
           {path: '/basicdata/institutional', name: 'institutional', component: institutional, meta: {title: "医疗机构字典", auth: true}},
           {path: '/basicdata/regionalDetil', name: 'regionalDetil', component: regionalDetil, meta: {title: "区域字典详情", auth: true}},
           {path: '/basicdata/regionalEdit', name: 'regionalEdit', component: regionalEdit, meta: {title: "区域字典编辑", auth: true}}
+        ]
+      },
+      {
+        path: '/dataDictionary', name: 'dataDictionary', component: dataDictionary, redirect: '/dataDictionary/matching', meta: {title: "数据字典管理", auth: true},
+        children: [
+          {path: '/dataDictionary/matching', name: 'matching', component: matching, meta: {title: "数据匹配", auth: true}},
+          {path: '/dataDictionary/result', name: 'result', component: result, meta: {title: "匹配结果", auth: true}},
         ]
       },
       {
@@ -287,40 +297,31 @@ const router = new VueRouter({
   }
 })
 //
-// // 路由开始之前的操作
-// router.beforeEach((to, from, next) => {
-//   let toName = to.name
-//   let fromName = from.name
-//   let is_login = store.state.user_info.login
-//   if (!is_login && toName !== 'login') {
-//     next({
-//       name: 'login'
-//     })
-//   } else if (is_login) {
-//     if (checkPageAuth(store.state.user_info.user.resource.pages, to.name)) {
-//       if (toName === 'login') {
-//         next({path: '/'})
-//       }
-//       if (is_login && toName !== 'task') {
-//         if (toName !== 'password' && toName !== 'login' && toName !== 'matching'&& toName !== 'help'&& toName !== 'result') {
-//           for (let i in store.state.user_info.task) {
-//             if (store.state.user_info.task[i] === 2) {
-//               next({name: 'task'})
-//               if (fromName === 'task') {
-//                 router.go(0)
-//               }
-//             }
-//           }
-//         }
-//       }
-//       next()
-//     } else {
-//       Message.error('对不起，您没有此页面的权限，请联系管理员')
-//     }
-//   } else {
-//     next()
-//   }
-// })
+// 路由开始之前的操作
+router.beforeEach((to, from, next) => {
+  let toName = to.name
+  let is_login = store.state.user_info.login
+  if (!is_login && toName !== 'login') {
+    if(toName == 'firstLogin'){
+      next({name:'firstLogin'})
+    }else{
+      next({
+        name: 'login'
+      })
+    }
+  } else if (is_login) {
+    if (checkPageAuth(store.state.user_info.user.resource.pages, to.name)) {
+      if (toName === 'login') {
+        next({path: '/'})
+      }
+      next()
+    } else {
+      Message.error('对不起，您没有此页面的权限，请联系管理员')
+    }
+  } else {
+    next()
+  }
+})
 
 //路由完成之后的操作
 router.afterEach(route => {

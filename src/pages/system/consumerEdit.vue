@@ -6,20 +6,16 @@
              基本信息
        </div>
        <div class="info">
-           <el-form-item label="用户编码" prop="code">
-             <el-input v-model="ruleForm.code" ref="code"  class="mechanism-input"></el-input>
-           </el-form-item>
-           <el-form-item label="用户名称" prop="loginName">
+           <el-form-item label="用户名称:" prop="loginName">
              <el-input v-model="ruleForm.loginName"  class="mechanism-input"></el-input>
            </el-form-item>
-           <el-form-item label="手机号码"  prop="phone">
+           <el-form-item label="手机号码:"  prop="phone">
              <el-input v-model="ruleForm.phone"  class="mechanism-input"></el-input>
           </el-form-item>
-           <el-form-item label="办公邮箱"  prop="email">
+           <el-form-item label="办公邮箱:"  prop="email">
              <el-input v-model="ruleForm.email"  class="mechanism-input"></el-input>
           </el-form-item>
-           <!-- <el-form-item label="办公座机"  prop="tel"> -->
-              <el-form-item label="办公座机">
+              <el-form-item label="办公座机:">
              <el-input v-model="ruleForm.tel"  class="mechanism-input"></el-input>
           </el-form-item>
        </div>
@@ -29,13 +25,13 @@
              用户角色
       </div>
       <div class="info">
-          <el-form-item label="所属机构类型" prop="deptType">
+          <el-form-item label="所属机构类型:" prop="deptType">
 				    <el-radio-group v-model="ruleForm.deptType"  @change="changeDeptType($event)">
 				      <el-radio :label="1" value="1">管理机构</el-radio>
 				      <el-radio :label="2" value="2">医疗机构</el-radio>
 				    </el-radio-group>
 				  </el-form-item>
-          <el-form-item label="所属机构名称" prop="deptId" >
+          <el-form-item label="所属机构名称:" prop="deptId" >
 					    <el-autocomplete
 					      class="inline-input"
 					      v-model="ruleForm.deptId"
@@ -45,7 +41,7 @@
                 @select="handleSelect"
 					    ></el-autocomplete>
           </el-form-item>
-          <el-form-item label="所属机构角色" prop="roleId" class="consumer-role">
+          <el-form-item label="所属机构角色:" prop="roleId" class="consumer-role">
 			    <el-radio-group v-model="ruleForm.roleId" >
 				    <el-radio
 				      	v-for="item in options"
@@ -70,7 +66,6 @@
     data(){
       return {
         ruleForm: {
-           code:'',
            loginName:'',
            phone:'',
            email:'',
@@ -82,9 +77,6 @@
         options:[],//机构角色
         restaurants:[],//自动完成数组
         rules:{
-        	  code:[
-        	      {required: true, message: '请输入用户编码', trigger: 'change' }
-        	  ],
         	  loginName:[
         	      {required: true, message: '请输入用户名称', trigger: 'change' }
         	  ],
@@ -124,7 +116,6 @@
            this.$fetch.api_system.getUserInfo({uid:this.$route.query.uid}).then((res)=>{
                if(res.code === "200"){
                 //获取用户详情信息展示
-                this.ruleForm.code = res.result.userPO.code;
                 this.ruleForm.loginName = res.result.userPO.loginName;
                 this.ruleForm.phone = res.result.userPO.phone;
                 this.ruleForm.email = res.result.userPO.email;
@@ -188,7 +179,6 @@
                           pwd: this.ruleForm.pwd,
                           email: this.ruleForm.email,
                           tel: this.ruleForm.tel,
-                          code: this.ruleForm.code,
                           phone: this.ruleForm.phone,
                           uid:this.$route.query.uid
                         }

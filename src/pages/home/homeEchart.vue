@@ -123,7 +123,7 @@
               },
             dataRange: {
               min: 0,
-              max: 2600,
+              max: 260,
               x: 'left',
               y: 'bottom',
               color: ['#0285FE','#92CBFF'],

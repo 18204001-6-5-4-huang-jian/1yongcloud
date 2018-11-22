@@ -181,7 +181,9 @@
                 v-if="searchForm.deptType == 1"
               >
                 <template slot-scope="scope">
-                  <el-button type="text" @click="query(scope.row,2)"><span>{{scope.row.country}}</span></el-button>
+                  <router-link :to="{path:'/detection/regionProvince',query:{province:scope.row.country}}">
+                    <el-button type="text">{{scope.row.country}}</el-button>
+                  </router-link>
                 </template>
               </el-table-column>
               <el-table-column
@@ -189,11 +191,12 @@
                 v-if="searchForm.deptType == 2"
               >
                 <template slot-scope="scope">
-                  <el-button type="text" @click="query(scope.row,3)"><span>{{scope.row.country}}</span></el-button>
+                  <el-button type="text" @click="query(scope.row,3)">{{scope.row.country}}</el-button>
                 </template>
               </el-table-column>
               <el-table-column
                 label="医院"
+                width="110"
                 v-if="searchForm.deptType == 3"
               >
                 <template slot-scope="scope">
@@ -317,9 +320,6 @@
     },
     created(){
       this.query(null, 1)
-    },
-    mounted(){
-
     },
     methods: {
       query(row, count){

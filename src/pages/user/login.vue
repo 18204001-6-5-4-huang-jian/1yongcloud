@@ -136,30 +136,20 @@
           if (valid) {
             this.$fetch.api_login.login(this.ruleForm)
               .then(response => {
-               let obj = response.result
-                this.$fetch.api_login.taskStatistics()
-                  .then(response => {
-                    this.set_user_info({
-                      user: obj,
-                      task:response.result,
-                      login: true
-                    })
-                    this.$message({
-                      type: 'success',
-                      message: '登录成功'
-                    })
-                     for(let i in response.result){
-                       if (response.result[i] == 2){
-                         setTimeout(() => {
-                           this.$router.replace('/home/task')
-                         }, 100)
-                         return
-                       }
-                     }
-                      setTimeout(() => {
-                        this.$router.replace('/')
-                      }, 100)
-                  })
+                this.set_user_info({
+                  user: response.result,
+                  login: true
+                })
+                    //首次登陆 修改密码
+                    if(response.result.firstLogin === 2){
+                      this.$router.push('/user/firstLogin')
+                    }else{
+                      this.$message({
+                        type: 'success',
+                        message: '登录成功'
+                      })
+                      this.$router.push('/home/home')
+                    }
 
               })
           } else {

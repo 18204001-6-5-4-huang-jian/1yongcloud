@@ -6,10 +6,6 @@
              基本信息
        </div>
        <div class="info">
-           <el-form-item label="用户编码:" prop="code">
-              {{ruleForm.code}}
-             <!-- <el-input v-model="ruleForm.code" ref="code"  class="mechanism-input"></el-input> -->
-           </el-form-item>
            <el-form-item label="用户名称:" prop="loginName">
              {{ruleForm.loginName}}
              <!-- <el-input v-model="ruleForm.loginName"  class="mechanism-input"></el-input> -->
@@ -74,7 +70,6 @@
     data(){
       return {
         ruleForm: {
-           code:'',
            loginName:'',
            phone:'',
            email:'',
@@ -87,9 +82,7 @@
         restaurants:[],//自动完成数组
         ruleDefault:{},
         rules:{
-        	  code:[
-        	      {required: true, message: '请输入用户编码', trigger: 'change' }
-        	  ],
+
         	  loginName:[
         	      {required: true, message: '请输入用户名称', trigger: 'change' }
         	  ],
@@ -129,7 +122,6 @@
            this.$fetch.api_system.getUserInfo({uid:this.$route.query.uid}).then((res)=>{
                if(res.code === "200"){
                 //获取用户详情信息展示
-                this.ruleForm.code = res.result.userPO.code;
                 this.ruleForm.loginName = res.result.userPO.loginName;
                 this.ruleForm.phone = res.result.userPO.phone;
                 this.ruleForm.email = res.result.userPO.email;

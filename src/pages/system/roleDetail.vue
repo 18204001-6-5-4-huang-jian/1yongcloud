@@ -26,7 +26,7 @@
           功能权限
         </div>
         <div class="info">
-          <el-form-item label="选择权限" prop="tree">
+          <el-form-item label="选择权限:" prop="tree">
             <el-tree
               ref="tree"
               :data="treeData"

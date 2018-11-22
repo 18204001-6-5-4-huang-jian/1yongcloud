@@ -66,7 +66,6 @@
           <el-button type="primary" :size="$store.state.size">新增</el-button>
         </router-link>
       <el-table
-        v-loading="loading"
         :data="queryResult.list"
         border
         :size="$store.state.size"
@@ -112,7 +111,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <div class="block" style="margin-top: 10px">
+      <div class="block" style="margin-top:10px">
         <el-pagination
           small
           @size-change="pageSizeChange"
@@ -124,6 +123,9 @@
           :total="queryResult.total">
         </el-pagination>
       </div>
+      <!-- <div v-show="queryResult.list.length<=0">
+        no data
+      </div> -->
     </div>
   </div>
 </template>
@@ -135,7 +137,6 @@
         const res = await this.$fetch.api_system.getOrganizationList({});
         if (res.code === '200') {
           this.queryResult = res.result;
-          this.loading = false;
         } else {
           this.$message({
             showClose: true,
@@ -170,7 +171,6 @@
           pageSize: 10,
           pageNum: 1
         },
-        loading: true,
         rules: {
           deptName: [
             {required: true, message: '请输入机构名称', trigger: 'change'}
@@ -201,7 +201,6 @@
         const res = await this.$fetch.api_system.getOrganizationList(this.form);
         if (res.code === '200') {
           this.queryResult = res.result;
-          this.loading = false;
         } else {
           this.$message({
             showClose: true,
@@ -232,15 +231,12 @@
       submitForm(formName){
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            console.log(valid)
-            console.log(1111)
             //请求数据
             // console.log(this.$refs[formName].model)
             try {
               const res = await this.$fetch.api_system.getOrganizationList(this.$refs[formName].model);
               if (res.code === '200') {
                 this.queryResult = res.result;
-                this.loading = false;
               } else {
                 this.$message({
                   showClose: true,

@@ -1,12 +1,5 @@
 <template>
   <div class="description">
-    <div class="breadcrumb">
-      <el-breadcrumb separator="/">
-        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item><router-link to="/detection" >监测指标</router-link></el-breadcrumb-item>
-        <el-breadcrumb-item><span class="no-redirect">药品分布</span></el-breadcrumb-item>
-      </el-breadcrumb>
-    </div>
     <div class="search">
       <el-form :model="searchForm" ref="form" labelWidth="100px" class="demo-ruleForm" :inline="true">
         <el-form-item label="时间">
@@ -22,6 +15,7 @@
             end-placeholder="结束日期"
             format="yyyy 年 MM 月"
             value-format="yyyy-MM"
+            class="input-width"
             @change="change()"
           >
           </el-date-picker>
@@ -42,7 +36,7 @@
         <el-form-item
           label="医保药物"
         >
-          <el-select v-model="searchForm.medicalInsuranceType" clearable placeholder="请选择"  style="width:200px"
+          <el-select v-model="searchForm.medicalInsuranceType" clearable placeholder="请选择" style="width:200px"
                      :size="$store.state.size">
             <el-option
               v-for="item in $store.state.medications"
@@ -122,16 +116,6 @@
         >
           <el-input :size="$store.state.size" v-model="searchForm.hospital"></el-input>
         </el-form-item>
-        <el-form-item
-          label="通用名"
-        >
-          <el-input :size="$store.state.size" v-model="searchForm.genericName"></el-input>
-        </el-form-item>
-        <el-form-item
-          label="商品名"
-        >
-          <el-input :size="$store.state.size" v-model="searchForm.productName"></el-input>
-        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="createCharts()" :size="$store.state.size" class="button-search">查询
           </el-button>
@@ -141,12 +125,21 @@
     <div class="table-container1">
       <div class="title">
          <span class="title-name">
-           抗肿瘤药物（通用名）累计金额
+           全国抗肿瘤药物金额
          </span>
       </div>
-      <div class="table">
+      <div>
         <div class="button-group">
           <el-row>
+            <el-radio-group v-model="searchForm.indexType" :size="$store.state.size" @change="query()"
+                            class="button-group-button">
+              <el-radio-button :label="1">全部</el-radio-button>
+              <el-radio-button :label="2">医保</el-radio-button>
+              <el-radio-button :label="3">未纳入医保</el-radio-button>
+              <el-radio-button :label="4">医保占比</el-radio-button>
+              <el-radio-button :label="5">甲类占比</el-radio-button>
+              <el-radio-button :label="6">乙类占比</el-radio-button>
+            </el-radio-group>
             <el-radio-group v-model="searchForm.moneyType" :size="$store.state.size" @change="query()"
                             class="button-group-button">
               <el-radio-button :label="1">使用金额</el-radio-button>
@@ -156,19 +149,25 @@
                             class="button-group-button">
               <el-radio-button :label="10">TOP10</el-radio-button>
               <el-radio-button :label="20">TOP20</el-radio-button>
+              <el-radio-button :label="100">全部</el-radio-button>
+            </el-radio-group>
+            <el-radio-group v-model="searchForm.deptType" :size="$store.state.size" @change="query()"
+                            class="button-group-button"
+                            v-if="searchForm.province == ''">
+              <el-radio-button :label="1">按省市</el-radio-button>
+              <el-radio-button :label="4">按区域</el-radio-button>
             </el-radio-group>
           </el-row>
         </div>
-        <!--<p class="table-row-title">截止到{{today | dateFormater}}，全国抗肿瘤药物累计使用160种</p>-->
+        <p class="table-row-title">截止到{{today | dateFormater}}，{{allOverNation}}抗肿瘤药物累计使用{{queryResult.sumMoney}}万元，其中：医保药品使用金额占比57.81%，甲类：{{queryResult.nailMoneyProportion | toFixed}}，乙类：{{queryResult.secondMoneyProportion | toFixed}}</p>
         <el-row class="table-row">
-          <el-col :span="8">
-            <charts :options="option" class='echart' :style="{height:height}" :autoResize=true
-                    v-if="echartState"></charts>
+          <el-col :span="8" >
+            <charts :options="option" class='echart' id="echart" :style="{height:height}" v-if="echartState" :autoResize=true></charts>
           </el-col>
           <el-col :span="16">
             <el-table
               :size="$store.state.size"
-              :data="queryResult.list"
+              :data="queryResult.stackedMapResult"
               border
               ref="table"
               style="width: 98%;">
@@ -178,83 +177,101 @@
                 width="50">
               </el-table-column>
               <el-table-column
-                label="药品名"
-                width="150"
-                :show-overflow-tooltip="true"
+                label="省市"
                 v-if="searchForm.deptType == 1"
               >
                 <template slot-scope="scope">
-                  <router-link :to="{path:'/detection/drugDetail',query:{genericName:scope.row.genericName}}">
-                    <el-button type="text">{{scope.row.genericName}}</el-button>
-                  </router-link>
+
+                    <el-button type="text">{{scope.row.country}}</el-button>
                 </template>
               </el-table-column>
               <el-table-column
-                width="150"
-                :show-overflow-tooltip="true"
-                prop="productName"
-                label="商品名"
+                label="市"
+                v-if="searchForm.deptType == 2"
+              >
+                <template slot-scope="scope">
+                  <el-button type="text" @click="query(scope.row,3)">{{scope.row.country}}</el-button>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="医院"
+                width="110"
+                v-if="searchForm.deptType == 3"
+              >
+                <template slot-scope="scope">
+                  <span>{{scope.row.country}}</span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="区域"
+                v-if="searchForm.deptType == 4"
+              >
+                <template slot-scope="scope">
+                  <span>{{scope.row.country}}</span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="医保金额占比"
+                width="110"
+              >
+                <template slot-scope="scope">
+                  <span>{{scope.row.alreadyMedicalInsuranceAmountProportion | toFixed}}</span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                prop="alreadyMedicalInsuranceAmount"
+                label="医保金额"
               >
               </el-table-column>
               <el-table-column
-                width="150"
-                :show-overflow-tooltip="true"
-                prop="productionUnits"
-                label="生产单位"
+                prop="allMoney"
+                label="全部金额"
               >
               </el-table-column>
               <el-table-column
-                width="150"
-                :show-overflow-tooltip="true"
-                prop="dosageForm"
-                label="剂型"
+                prop="norMedicalInsuranceAmount"
+                label="未纳入医保金额"
+                width="120"
               >
               </el-table-column>
               <el-table-column
-                width="150"
-                :show-overflow-tooltip="true"
-                prop="specifications"
-                label="规格"
+                prop="nailMoney"
+                label="甲类金额"
               >
               </el-table-column>
               <el-table-column
-                width="150"
-                :show-overflow-tooltip="true"
-                prop="approvalNumber"
-                label="批准文号"
+                prop="secondMoney"
+                label="乙类金额"
               >
               </el-table-column>
               <el-table-column
+                label="未纳入医保金额占比"
                 width="150"
-                :show-overflow-tooltip="true"
-                prop="registrationNumber"
-                label="注册证号"
               >
+                <template slot-scope="scope">
+                  <span>{{scope.row.norMedicalInsuranceAmountProportion | toFixed}}</span>
+                </template>
               </el-table-column>
               <el-table-column
-                width="150"
-                :show-overflow-tooltip="true"
-                prop="money"
-                label="金额（万元）"
+                label="乙类金额占比"
+                width="120"
               >
+                <template slot-scope="scope">
+                  <span>{{scope.row.nailMoneyProportion | toFixed}}</span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="甲类金额占比"
+                width="120"
+              >
+                <template slot-scope="scope">
+                  <span>{{scope.row.secondMoneyProportion | toFixed}}</span>
+                </template>
               </el-table-column>
             </el-table>
-            <div class="block">
-              <el-pagination
-                small
-                @size-change="pageSizeChange"
-                @current-change="currentPageChange"
-                :current-page="queryResult.num"
-                :page-sizes="[10, 20, 50, 100]"
-                :page-size="queryResult.topSize"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="queryResult.total">
-              </el-pagination>
-            </div>
           </el-col>
         </el-row>
       </div>
-
     </div>
   </div>
 </template>
@@ -267,10 +284,13 @@
     },
     data(){
       return {
+        allOverNation: '',
         searchForm: {
-          num: 1,
-          topSize: 10,
+          deptType: 1,
           moneyType: 1,
+          indexType: 1,
+          topSize: 10,
+          province: '',
           startDate: '',
           endDate: '',
           atHomeAndAbroad: '',
@@ -279,9 +299,7 @@
           hospitalGrade: '',
           hospital: '',
           drug: '',
-          medicalInsuranceType: '',
-          genericName: '',
-          productName: ''
+          medicalInsuranceType: ''
         },
         today: new Date(),
         button: 3,
@@ -295,28 +313,29 @@
           total: 0,
           list: []
         },
-        echartState: true,
-        height: '400px'
+        echartState:true,
+        height:''
       }
     },
     created(){
       this.query(null, 1)
     },
-    mounted(){
-
-    },
     methods: {
       query(row, count){
         if (count == 1) {
           this.searchForm.deptType = count
+          this.allOverNation = '全国'
         } else if (count == 2) {
           this.searchForm.deptType = count
           this.searchForm.province = row.country
+          this.allOverNation = row.country
         } else if (count == 3) {
           this.searchForm.deptType = count
           this.searchForm.city = row.country
+          this.allOverNation = row.country
         } else if (count == 4) {
           this.searchForm.deptType = count
+          this.allOverNation = '全国'
         }
         this.createCharts()
       },
@@ -328,15 +347,19 @@
               type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
             }
           },
+          legend: {
+            data: ['甲类', '乙类', '未纳入'],
+            y: '20px',
+          },
           grid: {
             left: '3%',
             right: '4%',
-            bottom: '5.5%',
-            top: 0,
+            bottom: '7%',
             containLabel: true
           },
           xAxis: {
-            type: 'value'
+            type: 'value',
+
           },
           yAxis: {
             type: 'category',
@@ -345,50 +368,82 @@
           },
           series: [
             {
-              name: '金额',
+              name: '甲类',
               type: 'bar',
               stack: '总量',
-              barWidth: 20,
+              barWidth: 15,
+              barMaxWidth: 40,
               label: {
                 normal: {
                   show: true,
                   position: 'insideRight',
-                  color: '#ffffff'
+                  color: '#ffffff',
                 }
               },
               itemStyle: {
                 normal: {
-                  color: "#70ad47"
+                  color: "#0086FA",
                 }
               },
               data: []
             },
+            {
+              name: '乙类',
+              type: 'bar',
+              stack: '总量',
+              label: {
+                normal: {
+                  show: true,
+                  position: 'insideRight',
+                }
+              },
+              itemStyle: {
+                normal: {
+                  color: "#00D196"
+                }
+              },
+              data: []
+            },
+            {
+              name: '未纳入',
+              type: 'bar',
+              stack: '总量',
+              label: {
+                normal: {
+                  show: true,
+                  position: 'insideRight',
+                }
+              },
+              itemStyle: {
+                normal: {
+                  color: "#0CC5EB",
+                  formatter: "{c}({d}%)",//数值和百分比
+                }
+              },
+              data: []
+            },
+
           ]
         };
         this.echartState = false
-        this.$fetch.api_home.statisticalDrug(this.searchForm)
+        this.$fetch.api_home.arrMoney(this.searchForm)
           .then(response => {
-            this.height = (response.result.list.length + 1) * 51 + 'px'
+            this.height = (response.result.stackedMapResult.length + 1) * 51 + 'px'
+            console.log(this.height)
             this.echartState = true
             this.$nextTick().then(() => {
-              response.result.list.filter(item => {
-                option.yAxis.data.push(item.genericName)
-                option.series[0].data.push(item.money)
+              response.result.stackedMapResult.filter(item => {
+                option.yAxis.data.push(item.country)
+                option.legend.data.push(item.country)
+                option.series[0].data.push(item.nailMoney)
+                option.series[1].data.push(item.secondMoney)
+                option.series[2].data.push(item.norMedicalInsuranceAmount)
               })
-              this.option = option
               this.queryResult = response.result
+              this.option = option
             })
           })
-      },
-      //每页显示查询结果条数变更事件，做重新查询操作
-      pageSizeChange(topSize) {
-        this.searchForm.topSize = topSize
-        this.query()
-      },
-      //切换当前页事件，做重新查询操作
-      currentPageChange(currentPage) {
-        this.searchForm.num = currentPage
-        this.query()
+
       },
       change(value){
         if (this.searchForm.time) {
@@ -411,7 +466,11 @@
   .button-search {
     margin-left: 30px;
   }
-
+   .table-container1{
+     background: #FFFFFF;
+     border-radius: 4px;
+     padding-bottom: 20px;
+   }
   .title {
     height: 50px;
     line-height: 50px;
@@ -424,7 +483,6 @@
     height: 70px;
     text-align: left;
     line-height: 70px;
-
     border-bottom: 1px solid #e5e5e5;
   }
 
@@ -451,7 +509,9 @@
     line-height: 40px;
     font-size: 14px;
   }
-
+  .echart{
+    width:100%;
+  }
   .table {
     background: #ffffff;
     padding-bottom: 20px;
@@ -460,12 +520,6 @@
   .table-row {
     margin-top: 40px;
     font-size: 14px;
-  }
-
-  .block {
-    text-align: right;
-    margin-top: 10px;
-    height: 30px;;
   }
 </style>
 

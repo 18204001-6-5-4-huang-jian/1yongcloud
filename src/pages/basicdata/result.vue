@@ -39,7 +39,7 @@
       <span>
         待匹配数据
 
-           <router-link to="/basicdata/matching">
+           <router-link to="/dataDictionary/matching">
              <span style="color: #0084FE;">
               {{count}}
              </span>
@@ -48,7 +48,7 @@
         条，点击右侧“匹配”功能或者在菜单”药品数据匹配“进行匹配
       </span>
       <span class="button-group">
-        <router-link to="/basicdata/matching">
+        <router-link to="/dataDictionary/matching">
             <el-button type="primary" :size="$store.state.size">继续匹配</el-button>
         </router-link>
          <el-button type="primary" :size="$store.state.size" @click="exportData()">导出</el-button>
@@ -426,7 +426,7 @@
             let link = document.createElement('a')
             link.style.display = 'none'
             link.href = url
-            link.setAttribute('download', '数据匹配结果.xlsx')
+            link.setAttribute('download', '数据匹配结果.xls')
             document.body.appendChild(link)
             link.click()
             URL.revokeObjectURL(link.href); // 释放URL 对象

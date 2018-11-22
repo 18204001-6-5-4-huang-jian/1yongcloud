@@ -1,5 +1,12 @@
 <template>
   <div class="description">
+    <div class="breadcrumb">
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item><router-link to="/detection" >监测指标</router-link></el-breadcrumb-item>
+        <el-breadcrumb-item><span class="no-redirect">种类分布</span></el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
     <div class="search">
       <el-form :model="searchForm" ref="form" labelWidth="100px" class="demo-ruleForm" :inline="true">
         <el-form-item
@@ -136,7 +143,7 @@
             >
               <template slot-scope="scope">
                 <router-link :to="{path:'/detection/province',query:{province:scope.row.province,drugsNum:scope.row.drugsNum}}">
-                  <span>{{scope.row.province}}</span>
+                  <el-button type="text">{{scope.row.province}}</el-button>
                 </router-link>
               </template>
             </el-table-column>
@@ -332,6 +339,7 @@
                 option.series[0].data = JSON.parse(response.result.value);
                 option.yAxis.data = JSON.parse(response.result.name);
               }
+
               this.option = option
             })
 
@@ -391,5 +399,6 @@
     line-height: 40px;
     font-size: 14px;
   }
+
 </style>
 

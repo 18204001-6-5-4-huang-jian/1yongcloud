@@ -1,22 +1,22 @@
 <template>
   <div class="left-side">
     <!--<div class="left-side-icon"><i class="iconfont icon-zoom-on" @click="$store.state.menu_state = !$store.state.menu_state" v-if="$store.state.menu_state"></i><i class="iconfont icon-zoom-off" @click="$store.state.menu_state = !$store.state.menu_state" v-else></i></div>-->
-    <el-menu router unique-opened :default-active="$route.path" background-color="#0084FE"  active-text-color="#ffffff" text-color="#ffffff" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="$store.state.menu_state">
-      <template  v-for="(item, index) in nav_menu_data">
-        <el-submenu :index="index.toString()+1" v-if="item.child">
+    <el-menu mode="vertical" router unique-opened :default-active="$route.path"  background-color="#0084FE"  active-text-color="#ffffff" text-color="#ffffff" class="el-menu-vertical-demo">
+      <div  v-for="(totalItem, index) in $store.state.user_info.user.resource.menu.child" :key="totalItem.uid">
+        <el-submenu :index="index.toString()+1" v-if="totalItem.child">
           <template slot="title">
-            <i :class="item.icon"></i>
-            <span slot="title">{{item.name}}</span>
+            <i :class="totalItem.icon"></i>
+            <span slot="title">{{totalItem.name}}</span>
           </template>
-          <el-menu-item-group v-for="item,index in item.child" :key="index">
+          <el-menu-item-group v-for="item,scIndex in totalItem.child" :key="item.uid">
             <el-menu-item :index="item.url" :disabled="item.url == '/'">{{item.name}}</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
-        <el-menu-item :index="item.url" v-else>
-          <i :class="['iconfont',item.icon]"></i>
-          <span slot="title">{{item.name}}</span>
+        <el-menu-item :index="totalItem.url" v-else>
+          <i :class="['iconfont',totalItem.icon]"></i>
+          <span slot="title">{{totalItem.name}}</span>
         </el-menu-item>
-      </template>
+      </div>
     </el-menu>
   </div>
 </template>
@@ -24,23 +24,10 @@
   export default {
     data() {
       return {
-        isCollapse: false,
         nav_menu_data:[],
       };
     },
-    created(){
-      this.nav_menu_data = this.$store.state.user_info.user.resource.menu.child
-      console.log(this.$store.state.user_info,1)
-    },
-    methods: {
-      handleOpen(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      handleClose(key, keyPath) {
-        console.log(key, keyPath);
-      },
 
-    }
   }
 </script>
 

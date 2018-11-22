@@ -1,19 +1,27 @@
 <template>
-  <div class="help-center">
-    <div class="button-group">
-      <el-radio-group v-model="searchForm1.moneyType" size="mini" @change="createChartsA()"  class="home-button-group">
-        <el-radio-button :label="1">使用金额</el-radio-button>
-        <el-radio-button :label="2">采购金额</el-radio-button>
-      </el-radio-group>
+  <div>
+    <el-breadcrumb separator="/">
+      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item><router-link to="/detection" >监测指标</router-link></el-breadcrumb-item>
+      <el-breadcrumb-item><router-link to="/detection/drugs" >药品分布</router-link></el-breadcrumb-item>
+      <el-breadcrumb-item><span class="no-redirect">{{$route.query.genericName}}</span></el-breadcrumb-item>
+    </el-breadcrumb>
+    <div class="table-container">
+      <div class="button-group">
+        <el-radio-group v-model="searchForm1.moneyType" size="mini" @change="createChartsA()"  class="home-button-group">
+          <el-radio-button :label="1">使用金额</el-radio-button>
+          <el-radio-button :label="2">采购金额</el-radio-button>
+        </el-radio-group>
+      </div>
+      <el-row :gutter="20" help-center>
+        <el-col :span="12">
+          <charts :options="optionA" style="height: 350px;width: 90%;" :autoResize=true @getYear="getYear"></charts>
+        </el-col>
+        <el-col :span="12">
+          <charts :options="optionB" style="height: 350px;width: 90%;" :autoResize=true></charts>
+        </el-col>
+      </el-row>
     </div>
-    <el-row :gutter="20">
-      <el-col :span="12">
-        <charts :options="optionA" style="height: 350px;width: 90%;" :autoResize=true @getYear="getYear"></charts>
-      </el-col>
-      <el-col :span="12">
-        <charts :options="optionB" style="height: 350px;width: 90%;" :autoResize=true></charts>
-      </el-col>
-    </el-row>
   </div>
 </template>
 <script>

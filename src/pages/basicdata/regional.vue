@@ -106,7 +106,8 @@
                   :data="data"
                   show-checkbox
                   node-key="code"
-                  :default-checked-keys="[]"
+                  :default-expanded-keys="defaultExpanded"
+                  :default-checked-keys="checkArray"
                   :props="defaultProps"
                   ref="tree"
                   >
@@ -178,6 +179,8 @@
         },
         //tree
         data:[],
+        checkArray:[],
+        defaultExpanded:[],
         defaultProps:{
           children: 'child',
           label: 'name'
@@ -298,7 +301,12 @@
                 const res = await this.$fetch.api_basicData.addAreaRegional(data);
                 if(res.code === "200"){
                     this.dialogFormVisible = false;
-                    // router.go(0)
+                    //清空
+                    this.formDialog.name = '';
+                    this.formDialog.code = '';
+                    this.formDialog.remark = '';
+                    this.$refs.tree.setCheckedKeys([]);
+                    //刷新数据
                     this.$nextTick(async ()=>{
                       const listData = await this.$fetch.api_basicData.getRegionalList({});
                         if(listData.code === "200"){

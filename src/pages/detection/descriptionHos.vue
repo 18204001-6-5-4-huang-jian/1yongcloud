@@ -1,5 +1,14 @@
 <template>
   <div class="description">
+    <div class="breadcrumb">
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item><router-link to="/detection" >监测指标</router-link></el-breadcrumb-item>
+        <el-breadcrumb-item><router-link to="/detection/description" >种类分布</router-link></el-breadcrumb-item>
+        <el-breadcrumb-item><router-link :to="{path:'/detection/province',query:{province:$route.query.province,drugsNum:$route.query.drugsNum}}" >{{$route.query.province}}</router-link></el-breadcrumb-item>
+        <el-breadcrumb-item><span class="no-redirect">{{$route.query.city}}</span></el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
     <div class="search">
       <el-form :model="searchForm" ref="form" labelWidth="100px" class="demo-ruleForm" :inline="true">
         <el-form-item

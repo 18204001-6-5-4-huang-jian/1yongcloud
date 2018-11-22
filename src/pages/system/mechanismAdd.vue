@@ -6,13 +6,13 @@
           基本信息
         </div>
         <div class="info">
-          <el-form-item label="机构名称：" prop="deptName">
+          <el-form-item label="机构名称:" prop="deptName">
             <el-input v-model="ruleForm.deptName" class="mechanism-input" :disabled="disabledState" @change="deptNameChange($event)"></el-input>
           </el-form-item>
-          <el-form-item label="机构电话：" prop="deptTel">
+          <el-form-item label="机构电话:" prop="deptTel">
             <el-input v-model="ruleForm.deptTel" class="mechanism-input"></el-input>
           </el-form-item>
-          <el-form-item label="机构地址：" prop="deptProvince" style="float:left">
+          <el-form-item label="机构地址:" prop="deptProvince" style="float:left">
             <el-select v-model="ruleForm.deptProvince" placeholder="请选择省" @change="provinceChange($event)">
               <!-- <el-option value="">请选择省</el-option> -->
               <el-option
@@ -45,14 +45,14 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="详细地址：" prop="deptAddress" style="float:left">
+          <el-form-item label="详细地址:" prop="deptAddress" style="float:left">
             <el-input v-model="ruleForm.deptAddress" class="mechanism-input" placeholder="请输入详细地址"></el-input>
           </el-form-item>
-          <el-form-item label="机构简介：" prop="deptSynopsis" style="clear:both">
+          <el-form-item label="机构简介:" prop="deptSynopsis" style="clear:both">
             <el-input
               type="textarea"
               :autosize="{ minRows: 4, maxRows: 16}"
-              placeholder="请输入不多余500字的描述"
+              placeholder="请输入不多余50字的描述"
               v-model="ruleForm.deptSynopsis">
             </el-input>
           </el-form-item>
@@ -64,7 +64,7 @@
           机构属性
         </div>
         <div class="info">
-          <el-form-item label="机构类型：" prop="deptType">
+          <el-form-item label="机构类型:" prop="deptType">
             <el-radio-group v-model="ruleForm.deptType" @change="selectCountryType" :disabled="disabledState">
               <el-radio :label="1" value="1" style="line-height: 40px;">
                 管理类型&nbsp;&nbsp;
@@ -102,7 +102,7 @@
               </el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="组织机构代码：" prop="deptCode">
+          <el-form-item label="组织机构代码:">
             <el-autocomplete
               class="inline-input"
               v-model="ruleForm.deptCode"
@@ -112,7 +112,7 @@
               style="width:200px"
             ></el-autocomplete>
           </el-form-item>
-          <el-form-item label="隶属机构：" prop="deptPid" v-if="$route.query.type == 1">
+          <el-form-item label="隶属机构:" prop="deptPid" v-if="$route.query.type == 1">
             <div class="block">
               <el-cascader
                 :options="optionList"
@@ -125,11 +125,11 @@
               </el-cascader>
             </div>
           </el-form-item>
-          <el-form-item label="隶属机构：" prop="deptPid" v-if="$route.query.type == 2">
+          <el-form-item label="隶属机构:" prop="deptPid" v-if="$route.query.type == 2">
             <el-input v-model="ruleForm.subjectionInstitutionName" :disabled="disabledState"
                       style="width:200px"></el-input>
           </el-form-item>
-          <el-form-item label="隶属关系：" prop="subjectionRelation" ref="form" v-if="ruleForm.deptType == 2">
+          <el-form-item label="隶属关系:" prop="subjectionRelation" ref="form" v-if="ruleForm.deptType == 2">
             <el-select v-model="ruleForm.subjectionRelation" placeholder="请选择" style="width:200px">
               <el-option label="委属(管)" value="1"></el-option>
               <el-option label="省属" value="2"></el-option>
@@ -200,7 +200,7 @@
           ],
           deptSynopsis: [
             {required: false, message: '请输入机构简介', trigger: 'change'},
-            {min: 0, max: 500, message: '请输入不多余500字的描述', trigger: 'change'}
+            {min: 1, max: 50, message: '请输入不多余500字的描述', trigger: 'change'}
           ],
           deptType: [
             {required: true, message: '请选择机构类型', trigger: 'change'}

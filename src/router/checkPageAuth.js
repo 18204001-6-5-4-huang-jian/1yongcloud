@@ -8,7 +8,6 @@ export default function checkPageAuth(data,name){
   let state = true
   data.filter(item=>{
     if(item == name){
-      console.log(item,name)
      state = true
     }
   })
