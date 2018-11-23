@@ -160,11 +160,11 @@ export default {
       value:3
     },
     {
-      label:'区级卫计委',
+      label:'县级卫计委',
       value:4
     },
     {
-      label:'县级卫计委',
+      label:'区级卫计委',
       value:5
     },
   ],
@@ -347,10 +347,6 @@ export default {
     {
       label:'商品名称',
       value:2
-    },
-    {
-      label:'剂型',
-      value:4
     },
     {
       label:'规格',

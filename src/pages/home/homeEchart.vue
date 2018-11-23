@@ -438,6 +438,9 @@
   }
   .homeEchart-col{
     background: #ffffff;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
     margin-bottom: 20px;
     padding-bottom:10px;
     padding-top: 10px;

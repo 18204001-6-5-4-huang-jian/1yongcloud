@@ -28,7 +28,7 @@
       </el-form-item>
       <el-form-item style="text-align:right;padding-right:10px;">
         <el-button @click="submitForm('ruleForm')">确定</el-button>
-         <el-button type="primary" @click="returnDetail">返回</el-button>
+        <el-button type="primary" @click="returnDetail">返回</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -98,7 +98,7 @@
             }
             const res = await this.$fetch.api_basicData.updateRegional(dataObj);
             if (res.code === "200") {
-               //清空
+              //清空
               this.ruleForm.name = '';
               this.ruleForm.code = '';
               this.ruleForm.remark = '';
@@ -119,12 +119,12 @@
         });
       },
       returnDetail(){
-         this.$router.push({
-           path:'/basicdata/regionalDetil',
-           query:{
-             uid:this.$route.query.uid
-           }
-         })
+        this.$router.push({
+          path: '/basicdata/regionalDetil',
+          query: {
+            uid: this.$route.query.uid
+          }
+        })
       }
     }
   }

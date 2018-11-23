@@ -58,7 +58,11 @@ const descriptionProvince = () => import('pages/detection/descriptionProvince')
 //种类分布市
 const descriptionHos = () => import('pages/detection/descriptionHos')
 //区域分布
-const region = () => import('pages/detection/region')
+const region = () => import('pages/detection/regions')
+//区域分布省
+const regionProvince = () => import('pages/detection/regionProvince')
+//区域分布市
+const regionCity = () => import('pages/detection/regionCity')
 //药品分布
 const drugs = () => import('pages/detection/drugs')
 //药品分布
@@ -206,6 +210,8 @@ const routes = [
             meta: {title: "药品分布", auth: true}
           },
           {path: '/detection/region', name: 'region', component: region, meta: {title: "区域分布", auth: true},},
+          {path: '/detection/regionProvince', name: 'regionProvince', component: regionProvince, meta: {title: "区域分布", auth: true},},
+          {path: '/detection/regionCity', name: 'regionCity', component: regionCity, meta: {title: "区域分布", auth: true},},
           {path: '/detection/drugs', name: 'drugs', component: drugs, meta: {title: "药品分布", auth: true}},
           {path: '/detection/average', name: 'average', component: average, meta: {title: "次均费用", auth: true}},
           {path: '/detection/drugList', name: 'drugList', component: drugList, meta: {title: "抗肿瘤药物清单", auth: true}},
@@ -309,17 +315,16 @@ router.beforeEach((to, from, next) => {
         name: 'login'
       })
     }
-  } else if (is_login) {
-    if (checkPageAuth(store.state.user_info.user.resource.pages, to.name)) {
-      if (toName === 'login') {
-        next({path: '/'})
-      }
-      next()
-    } else {
-      Message.error('对不起，您没有此页面的权限，请联系管理员')
-    }
   } else {
-    next()
+    if(is_login&&store.state.user_info.user.firstLogin == 2){
+      if(toName == 'login' || toName == 'firstLogin'){
+        next()
+      }else{
+        next('/user/login')
+      }
+    }else{
+      next()
+    }
   }
 })
 

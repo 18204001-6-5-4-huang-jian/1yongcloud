@@ -61,10 +61,11 @@ export default function fetch(options) {
         } else {
           loadingInstance.close()
           Message.error(res.data.message)
+          // resolve(res.data)
           reject(res.data)
         }
       }else{
-       console.log(res.status,'验证失败')
+
       }
 
       })

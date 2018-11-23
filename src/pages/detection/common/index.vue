@@ -37,6 +37,9 @@
         width="150"
         :show-overflow-tooltip="true"
       >
+        <template slot-scope="scope">
+        {{scope.row.dosageForm | dosageForm}}
+      </template>
       </el-table-column>
       <el-table-column
         prop="specifications"
@@ -95,11 +98,13 @@
       >
       </el-table-column>
       <el-table-column
-        prop="atHomeAndAbroad"
         width="150"
         label="国内外范围"
         :show-overflow-tooltip="true"
       >
+        <template slot-scope="scope">
+          {{scope.row.atHomeAndAbroad | scope}}
+        </template>
       </el-table-column>
       <el-table-column
         prop="classification"

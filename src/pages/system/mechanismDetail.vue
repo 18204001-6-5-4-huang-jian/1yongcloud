@@ -43,7 +43,7 @@
       </div>
     </div>
     <div class="button-group">
-      <router-link :to="{path:'/system/mechanismAdd',query:{type:2,deptId:$route.query.deptId}}">
+      <router-link :to="{path:'/system/mechanismAdd',query:{type:2,deptId:$route.query.deptId,uid:$route.query.uid}}">
         <el-button type="primary">编辑</el-button>
       </router-link>
       <router-link :to="{path:'/system/mechanism'}">
@@ -162,12 +162,17 @@
         this.$fetch.api_system.getLinkageList('000000').then((res)=>{
           this.ruleForm.deptProvince = this.getValue(res.result,this.ruleForm.deptProvince,'code','name')
         });
-        this.$fetch.api_system.getLinkageList(this.ruleForm.deptProvince).then((res)=>{
-          this.ruleForm.deptCity = this.getValue(res.result,this.ruleForm.deptCity,'code','name')
-        });
-        this.$fetch.api_system.getLinkageList(this.ruleForm.deptCity).then((res)=>{
-          this.ruleForm.deptDistrict = this.getValue(res.result,this.ruleForm.deptDistrict,'code','name')
-        });
+        if(this.ruleForm.deptProvince){
+          this.$fetch.api_system.getLinkageList(this.ruleForm.deptProvince).then((res)=>{
+            this.ruleForm.deptCity = this.getValue(res.result,this.ruleForm.deptCity,'code','name')
+          });
+        }
+       if(this.ruleForm.deptCity){
+         this.$fetch.api_system.getLinkageList(this.ruleForm.deptCity).then((res)=>{
+           this.ruleForm.deptDistrict = this.getValue(res.result,this.ruleForm.deptDistrict,'code','name')
+         });
+       }
+
         if(this.ruleForm.countryType){
           this.ruleForm.countryType = this.getValue(this.$store.state.mechanismLv,this.ruleForm.countryType,'value','label')
         }

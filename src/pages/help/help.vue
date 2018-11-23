@@ -54,9 +54,9 @@
       return {
         activeName: 'first',
         tableData: [{
-          name: '医院用户快速入门手册.docx',
+          name: '医院用户快速入门手册.pdf',
         }, {
-          name: '国家中心用户快速入门手册.docx',
+          name: '国家中心用户快速入门手册.pdf',
         }, {
           name: '医院药品上传模板.xls',
         }, {
@@ -83,9 +83,8 @@
         console.log(tab, event);
       },
       downLoad(row){
-        console.log(row.name)
         let url = `${server.server_base_url}basefile/${row.name}`
-        window.location.href = url
+        window.open(url)
       }
     }
   }

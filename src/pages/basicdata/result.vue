@@ -7,7 +7,7 @@
           label=""
           style="margin-left: 20px;"
         >
-          <el-radio-group v-model="searchForm.sysDept">
+          <el-radio-group v-model="searchForm.sysDept" @change="query()">
             <el-radio label="DEPT">本院药品库</el-radio>
             <el-radio label="SYS">标准药品库</el-radio>
           </el-radio-group>
@@ -15,7 +15,7 @@
         <el-form-item
           label="请选择查询字段名" label-width="150px"
         >
-          <el-select v-model="searchForm.deptType" placeholder="请选择查询字段名" style="width:200px"  :size="$store.state.size">
+          <el-select v-model="searchForm.deptType" placeholder="请选择查询字段名" style="width:200px"  :size="$store.state.size" @change="query()">
             <el-option
               v-for="item in $store.state.queryDeptDrugibrary1"
               :key="item.value"
@@ -28,7 +28,7 @@
           label="查找内容"
           prop="deptParam"
         >
-          <el-input v-model="searchForm.deptParam" autocomplete="off" style="width:200px"  :size="$store.state.size"></el-input>
+          <el-input v-model="searchForm.deptParam" autocomplete="off" style="width:200px"  @input="query()" :size="$store.state.size"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="query()"  :size="$store.state.size">查询</el-button>
@@ -102,11 +102,13 @@
             >
             </el-table-column>
             <el-table-column
-              prop="dosageForm"
               width="150"
               :show-overflow-tooltip="true"
               label="剂型"
             >
+              <template slot-scope="scope">
+                {{scope.row.dosageForm | dosageForm}}
+              </template>
             </el-table-column>
             <el-table-column
               prop="specifications"
@@ -191,11 +193,13 @@
             >
             </el-table-column>
             <el-table-column
-              prop="sysdosageForm"
               label="剂型"
               width="150"
               :show-overflow-tooltip="true"
             >
+              <template slot-scope="scope">
+                {{scope.row.sysdosageForm | dosageForm}}
+              </template>
             </el-table-column>
             <el-table-column
               prop="sysspecifications"
@@ -254,11 +258,13 @@
             >
             </el-table-column>
             <el-table-column
-              prop="sysscope"
               width="150"
               label="国内外范围"
               :show-overflow-tooltip="true"
             >
+              <template slot-scope="scope">
+                {{scope.row.sysscope | scope}}
+              </template>
             </el-table-column>
             <el-table-column
               prop="sysclassification"

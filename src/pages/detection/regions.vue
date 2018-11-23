@@ -1,5 +1,12 @@
 <template>
   <div class="description">
+    <div class="breadcrumb">
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item><router-link to="/detection" >监测指标</router-link></el-breadcrumb-item>
+        <el-breadcrumb-item><span class="no-redirect">区域分布</span></el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
     <div class="search">
       <el-form :model="searchForm" ref="form" labelWidth="100px" class="demo-ruleForm" :inline="true">
         <el-form-item label="时间">
@@ -15,8 +22,8 @@
             end-placeholder="结束日期"
             format="yyyy 年 MM 月"
             value-format="yyyy-MM"
-            class="input-width"
             @change="change()"
+            style="width: 100%;"
           >
           </el-date-picker>
         </el-form-item>
@@ -137,8 +144,8 @@
               <el-radio-button :label="2">医保</el-radio-button>
               <el-radio-button :label="3">未纳入医保</el-radio-button>
               <el-radio-button :label="4">医保占比</el-radio-button>
-              <el-radio-button :label="5">甲类占比</el-radio-button>
-              <el-radio-button :label="6">乙类占比</el-radio-button>
+              <el-radio-button :label="6">甲类占比</el-radio-button>
+              <el-radio-button :label="5">乙类占比</el-radio-button>
             </el-radio-group>
             <el-radio-group v-model="searchForm.moneyType" :size="$store.state.size" @change="query()"
                             class="button-group-button">
@@ -181,7 +188,7 @@
                 v-if="searchForm.deptType == 1"
               >
                 <template slot-scope="scope">
-                  <router-link :to="{path:'/detection/regionProvince',query:{province:scope.row.country}}">
+                  <router-link :to="{path:'/detection/regionProvince',query:{province:scope.row.country,deptType:2}}">
                     <el-button type="text">{{scope.row.country}}</el-button>
                   </router-link>
                 </template>
@@ -278,8 +285,10 @@
 </template>
 
 <script>
+  import  query from './regionJs'
   import {charts} from 'components'
   export default {
+    mixins:[query],
     components: {
       charts
     },
@@ -319,133 +328,9 @@
       }
     },
     created(){
-      this.query(null, 1)
+      this.query(1)
     },
     methods: {
-      query(row, count){
-        if (count == 1) {
-          this.searchForm.deptType = count
-          this.allOverNation = '全国'
-        } else if (count == 2) {
-          this.searchForm.deptType = count
-          this.searchForm.province = row.country
-          this.allOverNation = row.country
-        } else if (count == 3) {
-          this.searchForm.deptType = count
-          this.searchForm.city = row.country
-          this.allOverNation = row.country
-        } else if (count == 4) {
-          this.searchForm.deptType = count
-          this.allOverNation = '全国'
-        }
-        this.createCharts()
-      },
-      createCharts(){
-        let option = {
-          tooltip: {
-            trigger: 'axis',
-            axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-              type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-            }
-          },
-          legend: {
-            data: ['甲类', '乙类', '未纳入'],
-            y: '20px',
-          },
-          grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '7%',
-            containLabel: true
-          },
-          xAxis: {
-            type: 'value',
-
-          },
-          yAxis: {
-            type: 'category',
-            data: [],
-            inverse: true,
-          },
-          series: [
-            {
-              name: '甲类',
-              type: 'bar',
-              stack: '总量',
-              barWidth: 15,
-              barMaxWidth: 40,
-              label: {
-                normal: {
-                  show: true,
-                  position: 'insideRight',
-                  color: '#ffffff',
-                }
-              },
-              itemStyle: {
-                normal: {
-                  color: "#0086FA",
-                }
-              },
-              data: []
-            },
-            {
-              name: '乙类',
-              type: 'bar',
-              stack: '总量',
-              label: {
-                normal: {
-                  show: true,
-                  position: 'insideRight',
-                }
-              },
-              itemStyle: {
-                normal: {
-                  color: "#00D196"
-                }
-              },
-              data: []
-            },
-            {
-              name: '未纳入',
-              type: 'bar',
-              stack: '总量',
-              label: {
-                normal: {
-                  show: true,
-                  position: 'insideRight',
-                }
-              },
-              itemStyle: {
-                normal: {
-                  color: "#0CC5EB",
-                  formatter: "{c}({d}%)",//数值和百分比
-                }
-              },
-              data: []
-            },
-
-          ]
-        };
-        this.echartState = false
-        this.$fetch.api_home.arrMoney(this.searchForm)
-          .then(response => {
-            this.height = (response.result.stackedMapResult.length + 1) * 51 + 'px'
-            console.log(this.height)
-            this.echartState = true
-            this.$nextTick().then(() => {
-              response.result.stackedMapResult.filter(item => {
-                option.yAxis.data.push(item.country)
-                option.legend.data.push(item.country)
-                option.series[0].data.push(item.nailMoney)
-                option.series[1].data.push(item.secondMoney)
-                option.series[2].data.push(item.norMedicalInsuranceAmount)
-              })
-              this.queryResult = response.result
-              this.option = option
-            })
-          })
-
-      },
       change(value){
         if (this.searchForm.time) {
           this.searchForm.startDate = this.searchForm.time[0]
@@ -481,14 +366,14 @@
   }
 
   .button-group {
-    height: 70px;
+    /* height: 70px; */
     text-align: left;
     line-height: 70px;
     border-bottom: 1px solid #e5e5e5;
   }
 
   .button-group-button {
-    margin-left: 20px;
+    margin-left: 10px;
   }
 
   .title span .el-radio-group {
@@ -505,6 +390,7 @@
   }
 
   .table-row-title {
+    /* padding-top: 40px; */
     padding-left: 30px;
     height: 20px;
     line-height: 40px;

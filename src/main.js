@@ -4,6 +4,7 @@ import "babel-polyfill"
 import Vue from 'vue'
 import App from './App'
 import 'element-ui/lib/theme-chalk/index.css';
+import './assets/font/iconfont.css'; // iconfont 具体图标见https://github.com/PanJiaChen/vue-element-admin/wiki
 import '../theme/index.css'
 //导入element组件
 import ElementUI from 'element-ui'
@@ -44,6 +45,8 @@ new Vue({
   el: '#app',
   router,
   store,
+  // render: h => h(App),
   components: { App },
   template: '<App/>'
 })
+

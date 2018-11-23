@@ -15,25 +15,27 @@
         <el-form-item
           label="省份:"
         >
-          <el-select v-model="form.subordinate" placeholder="请选择省份" style="width:120px" clearable :size="$store.state.size" @change="getCityList($event)">
+          <el-select v-model="form.subordinate" placeholder="请选择省份" style="width:120px" clearable
+                     :size="$store.state.size" @change="getCityList($event)">
             <el-option
-                v-for="item in provinceList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.code">
-              </el-option>
+              v-for="item in provinceList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.code">
+            </el-option>
           </el-select>
         </el-form-item>
         <el-form-item
           label="市:"
         >
-          <el-select v-model="form.subordinateCity" placeholder="请选择市" style="width:120px" clearable :size="$store.state.size">
+          <el-select v-model="form.subordinateCity" placeholder="请选择市" style="width:120px" clearable
+                     :size="$store.state.size">
             <el-option
-                v-for="item in cityList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.code">
-              </el-option>
+              v-for="item in cityList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.code">
+            </el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -93,35 +95,35 @@
         </el-pagination>
       </div>
       <!-- dialog -->
-     <el-dialog title="添加区划" :visible.sync="dialogFormVisible" center>
-      <el-form :model="formDialog" ref="formDialog" :rules="dialogRules">
-        <el-form-item label="区域名称" label-width="120px" prop="name">
-          <el-input v-model="formDialog.name" placeholder="请输入区划名称" clearable style="width:200px;"></el-input>
-        </el-form-item>
-         <el-form-item label="区域编码" label-width="120px" prop="code">
-          <el-input v-model="formDialog.code" placeholder="请输入区划编码" clearable style="width:200px;"></el-input>
-        </el-form-item>
-        <el-form-item label="包含省，市" label-width="120px">
-              <el-tree
-                  :data="data"
-                  show-checkbox
-                  node-key="code"
-                  :default-expanded-keys="defaultExpanded"
-                  :default-checked-keys="checkArray"
-                  :props="defaultProps"
-                  ref="tree"
-                  >
-             </el-tree>
-      </el-form-item>
-       <el-form-item label="备注" label-width="120px">
-          <el-input v-model="formDialog.remark" autocomplete="off" style="width:200px;"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="submitDialog('formDialog')">确定</el-button>
-      </div>
-</el-dialog>
+      <el-dialog title="添加区划" :visible.sync="dialogFormVisible" center>
+        <el-form :model="formDialog" ref="formDialog" :rules="dialogRules">
+          <el-form-item label="区域名称" label-width="120px" prop="name">
+            <el-input v-model="formDialog.name" placeholder="请输入区划名称" clearable style="width:200px;"></el-input>
+          </el-form-item>
+          <el-form-item label="区域编码" label-width="120px" prop="code">
+            <el-input v-model="formDialog.code" placeholder="请输入区划编码" clearable style="width:200px;"></el-input>
+          </el-form-item>
+          <el-form-item label="包含省，市" label-width="120px">
+            <el-tree
+              :data="data"
+              show-checkbox
+              node-key="code"
+              :default-expanded-keys="defaultExpanded"
+              :default-checked-keys="checkArray"
+              :props="defaultProps"
+              ref="tree"
+            >
+            </el-tree>
+          </el-form-item>
+          <el-form-item label="备注" label-width="120px">
+            <el-input v-model="formDialog.remark" autocomplete="off" style="width:200px;"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取消</el-button>
+          <el-button type="primary" @click="submitDialog('formDialog')">确定</el-button>
+        </div>
+      </el-dialog>
 
     </div>
   </div>
@@ -142,12 +144,12 @@
           name: '',
           code: '',
           subordinate: '',
-          subordinateCity:'',
+          subordinateCity: '',
           pageSize: 10,
           pageNum: 1
         },
-        provinceList:[],
-        cityList:[],
+        provinceList: [],
+        cityList: [],
         rules: {
           name: [
             {required: true, message: '请输入区划名称', trigger: 'change'}
@@ -167,21 +169,21 @@
         formDialog: {
           name: '',
           code: '',
-          remark:''
+          remark: ''
         },
-        dialogRules:{
-            name:[
-              {required: true, message: '请输入区划名称', trigger: 'change'}
-            ],
-            code:[
-              {required: true, message: '请输入区划编码', trigger: 'change'}
-            ]
+        dialogRules: {
+          name: [
+            {required: true, message: '请输入区划名称', trigger: 'change'}
+          ],
+          code: [
+            {required: true, message: '请输入区划编码', trigger: 'change'}
+          ]
         },
         //tree
-        data:[],
-        checkArray:[],
-        defaultExpanded:[],
-        defaultProps:{
+        data: [],
+        checkArray: [],
+        defaultExpanded: [],
+        defaultProps: {
           children: 'child',
           label: 'name'
         }
@@ -191,32 +193,32 @@
     async mounted(){
       //获取列表数据
       const listData = await this.$fetch.api_basicData.getRegionalList({});
-      if(listData.code === "200"){
+      if (listData.code === "200") {
         this.queryResult = listData.result;
       }
       //请求省份list
-       const res = await this.$fetch.api_system.getLinkageList('000000');
-       if(res.code === "200"){
-         this.provinceList = res.result;
-       }
+      const res = await this.$fetch.api_system.getLinkageList('000000');
+      if (res.code === "200") {
+        this.provinceList = res.result;
+      }
       //请求dirlog的tree数据
       const resDirlog = await this.$fetch.api_basicData.addAreaTree();
-       if(resDirlog.code === "200"){
-          this.data = resDirlog.result.child;//级联选择器list
-       }
+      if (resDirlog.code === "200") {
+        this.data = resDirlog.result.child;//级联选择器list
+      }
     },
     methods: {
       async query(){
         //分页请求数据
         console.log(this.form);
         const res = await this.$fetch.api_basicData.getRegionalList(this.form);
-        if(res.code === "200"){
+        if (res.code === "200") {
           this.queryResult = res.result;
-        }else{
+        } else {
           this.$message({
-             type:'error',
-             showClose:true,
-             message:'请求失败'
+            type: 'error',
+            showClose: true,
+            message: '请求失败'
           })
         }
       },
@@ -230,33 +232,33 @@
         this.query()
       },
       handleRead(row){
-          // console.log(row.uid);
-          this.$router.push({
-            path:'/basicdata/regionalDetil',
-            query:{
-                uid:row.uid
-            }
-          })
+        // console.log(row.uid);
+        this.$router.push({
+          path: '/basicdata/regionalDetil',
+          query: {
+            uid: row.uid
+          }
+        })
       },
       submitForm(formName){
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
             //请求数据
             const dataObj = {
-                name:this.form.name,
-                code:this.form.code,
-                subordinate:this.form.subordinateCity != "" ? this.form.subordinateCity:this.form.subordinate,
-                pageSize: 10,
-                pageNum: 1
+              name: this.form.name,
+              code: this.form.code,
+              subordinate: this.form.subordinateCity != "" ? this.form.subordinateCity : this.form.subordinate,
+              pageSize: 10,
+              pageNum: 1
             }
             const res = await this.$fetch.api_basicData.getRegionalList(dataObj);
-            if(res.code === "200"){
+            if (res.code === "200") {
               this.queryResult = res.result;
-            }else{
+            } else {
               this.$message({
-                type:'error',
-                showClose:true,
-                message:'查询失败'
+                type: 'error',
+                showClose: true,
+                message: '查询失败'
               })
             }
           } else {
@@ -265,76 +267,78 @@
         });
       },
       async getCityList(e){
-         if(e != ''){
-              const res = await this.$fetch.api_system.getLinkageList(e);
-            if(res.code === "200"){
-              this.form.subordinateCity = "";//清空上一次选择的市
-              this.cityList = res.result;
+        if (e != '') {
+          const res = await this.$fetch.api_system.getLinkageList(e);
+          if (res.code === "200") {
+            this.form.subordinateCity = "";//清空上一次选择的市
+            this.cityList = res.result;
           }
-         }else{
-            //省份为空
-         }
+        } else {
+          //省份为空
+        }
       },
       addArea(){
         this.dialogFormVisible = true;
-       },
-       submitDialog(form){
-         //请求数据
-         this.$refs[form].validate(async (valid) => {
-              if(valid){
-                const treeList = this.$refs.tree.getCheckedKeys();//获取code数组
-                for(let i=0;i<this.data.length;i++){
-                   if(this.data[i].child && this.data[i].child != null){
-                       for(let j=0;j<this.data[i].child.length;j++){
-                         if(treeList.indexOf(this.data[i].child[j].code) >= 0 && treeList.indexOf(this.data[i].code) < 0){
-                              treeList.push(this.data[i].code);
-                         }
-                       }
-                   }
+      },
+      submitDialog(form){
+        //请求数据
+        this.$refs[form].validate(async (valid) => {
+          if (valid) {
+            const treeList = this.$refs.tree.getCheckedKeys();//获取code数组
+            for (let i = 0; i < this.data.length; i++) {
+              if (this.data[i].child && this.data[i].child != null) {
+                for (let j = 0; j < this.data[i].child.length; j++) {
+                  if (treeList.indexOf(this.data[i].child[j].code) >= 0 && treeList.indexOf(this.data[i].code) < 0) {
+                    treeList.push(this.data[i].code);
+                  }
                 }
-                const data ={
-                  name:this.formDialog.name,
-                  code:this.formDialog.code,
-                  remark:this.formDialog.remark,
-                  subordinate:treeList.join(',')
-                }
-                const res = await this.$fetch.api_basicData.addAreaRegional(data);
-                if(res.code === "200"){
-                    this.dialogFormVisible = false;
-                    //清空
-                    this.formDialog.name = '';
-                    this.formDialog.code = '';
-                    this.formDialog.remark = '';
-                    this.$refs.tree.setCheckedKeys([]);
-                    //刷新数据
-                    this.$nextTick(async ()=>{
-                      const listData = await this.$fetch.api_basicData.getRegionalList({});
-                        if(listData.code === "200"){
-                          this.queryResult = listData.result;
-                        }
-                    })
-                }
-              }else{
-
               }
-         })
-       }
+            }
+            const data = {
+              name: this.formDialog.name,
+              code: this.formDialog.code,
+              remark: this.formDialog.remark,
+              subordinate: treeList.join(',')
+            }
+            const res = await this.$fetch.api_basicData.addAreaRegional(data);
+            if (res.code === "200") {
+              this.dialogFormVisible = false;
+              //清空
+              this.formDialog.name = '';
+              this.formDialog.code = '';
+              this.formDialog.remark = '';
+              this.$refs.tree.setCheckedKeys([]);
+              //刷新数据
+              this.$nextTick(async () => {
+                const listData = await this.$fetch.api_basicData.getRegionalList({});
+                if (listData.code === "200") {
+                  this.queryResult = listData.result;
+                }
+              })
+            }
+          } else {
+
+          }
+        })
+      }
     }
 
   }
 </script>
 
 <style scoped>
-  .regional .el-button--text{
+  .regional .el-button--text {
     background: #0084FE;
     padding: 10px 15px;
     border-radius: 5px;
     color: #ffffff;
   }
-  .regional .el-message-box__header{
-    text-align:center;
+
+  .regional .el-message-box__header {
+    text-align: center;
   }
-  .el-dialog__header{
+
+  .el-dialog__header {
     text-align: center;
   }
 </style>

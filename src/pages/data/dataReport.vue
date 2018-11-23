@@ -5,7 +5,7 @@
       <el-form-item
         label="上报数据年度"
       >
-        <el-select v-model="searchForm.batchDataYear" placeholder="请选择" style="width:120px" :size="$store.state.size"
+        <el-select v-model="searchForm.batchDataYear" placeholder="请选择" style="width:200px" :size="$store.state.size"
                    v-if="$route.query.batchType == 1" @change="query()" clearable>
           <el-option
             v-for="item in $store.state.optionsYear"
@@ -14,7 +14,7 @@
             :value="item.value">
           </el-option>
         </el-select>
-        <el-select v-model="searchForm.batchDataYear" placeholder="请选择" style="width:120px" :size="$store.state.size" v-else clearable
+        <el-select v-model="searchForm.batchDataYear" placeholder="请选择" style="width:200px" :size="$store.state.size" v-else clearable
                    @change="query()">
           <el-option
             v-for="item in $store.state.optionsYear1"
@@ -28,7 +28,7 @@
         label="上报数据月份"
         v-if="$route.query.batchType == 1"
       >
-        <el-select v-model="searchForm.batchDataMonth" placeholder="请选择" style="width:120px" :size="$store.state.size" clearable
+        <el-select v-model="searchForm.batchDataMonth" placeholder="请选择" style="width:200px" :size="$store.state.size" clearable
                    @change="query()">
           <el-option
             v-for="item in $store.state.optionsMonth"
@@ -95,7 +95,7 @@
         label="标准文件格式"
         show-overflow-tooltip>
         <template slot-scope="scope">
-          <span>xls，xlsx，txt，csv</span>
+          <span>xls，xlsx，csv</span>
         </template>
       </el-table-column>
     </el-table>
@@ -124,7 +124,7 @@
       1、上报文件格式目前支持：xls、xlsx、csv，保存文件时，请选择UTF-8编码。 <br>
       2、历史数据（2013年1月1日-2017年12月31日）集中上报，按年份上报，截止日期，以通报为准。<br>
       3、2018年及以后数据，分批次上报，按月份上报，截止日期，已通知为准。<br>
-      4、数据上报前，务必请仔细核对“药品字典管理->已匹配”中的数据，从而数据保证成功上传。点击“ <router-link to="/basicdata/result"><span style="color: #0084FE;font-size: 14px;font-weight: 700;">前往</span></router-link>”
+      4、数据上报前，请仔细核对“药品字典管理->已匹配”中的数据，从而数据保证成功上传。点击“ <router-link to="/dataDictionary/result"><span style="color: #0084FE;font-size: 14px;font-weight: 700;">前往</span></router-link>”
     </div>
   </div>
 </template>

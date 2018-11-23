@@ -142,13 +142,13 @@
                 })
                     //首次登陆 修改密码
                     if(response.result.firstLogin === 2){
-                      this.$router.push('/user/firstLogin')
+                      this.$router.replace('/user/firstLogin')
                     }else{
                       this.$message({
                         type: 'success',
                         message: '登录成功'
                       })
-                      this.$router.push('/home/home')
+                      this.$router.replace('/home/home')
                     }
 
               })

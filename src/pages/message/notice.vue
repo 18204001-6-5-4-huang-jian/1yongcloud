@@ -7,17 +7,23 @@
            <el-input v-model="ruleForm.title" placeholder="消息标题" clearable :size="$store.state.size" style="width: 220px"></el-input>
          </el-form-item>
          <el-form-item label="接收时间">
-           <el-col :span="11">
-             <el-form-item>
-               <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.startAcceptTime" style="width: 220px;" clearable value-format="yyyy-MM-dd" :size="$store.state.size"></el-date-picker>
-             </el-form-item>
-           </el-col>
-           <el-col class="line" :span="2" style="padding-left:8px;">至</el-col>
-           <el-col :span="11">
-             <el-form-item >
-               <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.endAcceptTime" style="width: 220px;" clearable value-format="yyyy-MM-dd" :size="$store.state.size"></el-date-picker>
-             </el-form-item>
-           </el-col>
+            <el-date-picker
+              clearable
+              v-model="ruleForm.time"
+              type="daterange"
+              align="right"
+              unlink-panels
+              :size="$store.state.size"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              format="yyyy 年 MM 月"
+              value-format="yyyy-MM"
+              class="input-width"
+              @change="change()"
+              style="width:100%;"
+          >
+          </el-date-picker>
          </el-form-item>
          <el-form-item label="阅读状态">
            <el-select v-model="ruleForm.status" placeholder="阅读状态" style="width: 220px" clearable :size="$store.state.size">
@@ -191,15 +197,22 @@ import dayjs from 'dayjs'
         this.ruleForm.pageNum = currentPage
         this.query();
       },
+      change(value){
+        if (this.ruleForm.time) {
+          this.ruleForm.startAcceptTime = this.ruleForm.time[0]
+          this.ruleForm.endAcceptTime = this.ruleForm.time[1]
+        } else {
+          this.ruleForm.startAcceptTime = ''
+          this.ruleForm.endAcceptTime = ''
+        }
+      },
       submitForm(formName){
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
             //YYYY-MM-DD
-            console.log(this.ruleForm.startAcceptTime);
             const dataObj = {
                   title:this.ruleForm.title,
                   status:this.ruleForm.status == '0'?'':this.ruleForm.status,
-                  // dayjs(this.ruleForm.startAcceptTime).format('YYYY-MM-DD')
                   startAcceptTime:this.ruleForm.startAcceptTime != "" && this.ruleForm.startAcceptTime != null?dayjs(this.ruleForm.startAcceptTime).format('YYYY-MM-DD'):"",
                   endAcceptTime:this.ruleForm.endAcceptTime != "" && this.ruleForm.endAcceptTime != null?dayjs(this.ruleForm.endAcceptTime).format('YYYY-MM-DD'):""
             }

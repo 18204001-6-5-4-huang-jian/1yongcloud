@@ -18,20 +18,19 @@
         <span class="input-span">{{ruleForm.tel}}</span>
         <span style="color:#fff;">*</span>
          <span class="notice" @click="changeTel">更换座机</span>
-         <div>区号、分机号请用“-”分开，如010-098765-123</div>
+
       </el-form-item>
       <el-form-item>
       </el-form-item>
     </el-form>
-    <!-- 修改密码 -->
+    <!-- 修改手机 -->
     <el-dialog :visible.sync="dialogFormVisible">
       <el-form :model="formDialog" ref="formDialog" :rules="formDialogRules">
         <el-form-item label="当前手机号码:" label-width="120px" prop="phone">
           <el-input v-model="formDialog.phone" style="width:200px;" :readonly="true"></el-input>
         </el-form-item>
         <el-form-item label="验证码:" label-width="120px" prop="code">
-          <el-input v-model="formDialog.code" style="width:200px;" @blur="vertifyCode()"></el-input>
-
+          <el-input v-model="formDialog.code" :maxLength="6" style="width:200px;"></el-input>
           <span class="inline-code" @click="getCode()" v-if="verificationState">获取验证码</span>
           <span class="verification-agin" v-else>{{verificationCount}}秒后重新获取</span>
           <div>请注意查收原手机号码收到的短信验证码</div>
@@ -67,7 +66,7 @@
           <el-input v-model="telDialog.tel" style="width:200px;" :readonly="true"></el-input>
         </el-form-item>
         <el-form-item label="新办公座机:" label-width="120px">
-          <el-input v-model="telDialog.newTel" style="width:200px;"></el-input>
+          <el-input v-model="telDialog.newTel" style="width:200px;"></el-input> 　&nbsp;<span>区号、分机号请用“-”分开，如010-098765-123</span>
         </el-form-item>
       </el-form>
         <div slot="footer" class="dialog-footer">
@@ -83,6 +82,21 @@ import {SET_USER_INFO} from 'store/actions/type'
 import {GET_USER_INFO} from 'store/getters/type'
   export default {
     data(){
+      var valid_code = (rule, value, callback) => {
+        if (value == '') {
+          callback(new Error('验证码不能为空'))
+        } else if (value.length == 6) {
+            const state = this.vertifyCode()
+            console.log(11111,state)
+            if(state){
+                callback()
+            }else{
+              callback(new Error('验证码错误'))
+            }
+        } else {
+          callback()
+        }
+      };
       return {
         ruleForm: {
           phone: '',
@@ -117,8 +131,10 @@ import {GET_USER_INFO} from 'store/getters/type'
            ],
            code:[
              {required: true, message: '请输入验证码', trigger:['blur','change']},
+//             {validator: valid_code, trigger:['blur']}
            ]
         },
+        vertifyStatus:false,
         emailDialoglRules:{
            email:[
                {required: true, message: '请输入当前工作邮箱', trigger:['blur','change']},
@@ -155,17 +171,27 @@ import {GET_USER_INFO} from 'store/getters/type'
           submitFormPhone(formName){
               this.$refs[formName].validate(async (valid) => {
                 if(valid){
-                   //修改电话
-                   const res = await this.$fetch.api_detection.updateUserInfo({loginName:this.get_user_info.user.loginName,phone:this.formDialog.newphone});
-                   if(res.code === "200"){
-                       this.dialogFormVisible = false;
-                       this.updateData();
-                   }
+                  this.$fetch.api_detection.vertifyCode({
+                    loginName:this.get_user_info.user.loginName,
+                    smsAuthCode:this.formDialog.code
+                  }).then(res=>{
+                     if(res.success){
+                       this.$fetch.api_detection.updateUserInfo({loginName:this.get_user_info.user.loginName,phone:this.formDialog.newphone}).then(res=>{
+                         this.dialogFormVisible = false
+                         this.$message({
+                           type:'success',
+                           message:'修改成功'
+                         })
+                         this.updateData();
+                       })
+                     }
+                  })
                 }else{
                   return false;
                 }
               })
           },
+
           async getCode(){
              //获取验证码
              const res = await this.$fetch.api_detection.getPhoneCode({loginName:this.get_user_info.user.loginName});
@@ -194,25 +220,18 @@ import {GET_USER_INFO} from 'store/getters/type'
               }, 1000)
             }
           },
-          async vertifyCode(){
+           vertifyCode(){
               //验证验证码
+              let state = false
               if(this.formDialog.code != ''){
-                const res = await this.$fetch.api_detection.vertifyCode({
+               this.$fetch.api_detection.vertifyCode({
                   loginName:this.get_user_info.user.loginName,
                   smsAuthCode:this.formDialog.code
-                })
-                if(res.code === '200'){
-                     this.$message({
-                     type:'success',
-                     message:'验证手机号验证成功'
-                   })
-                }else{
-                   this.$message({
-                     type:'error',
-                     message:'验证手机号验证码失败'
-                   })
-                }
+                }).then(res=>{
+
+               })
               }
+             return state
           },
           submitFormEmail(formName){
               this.$refs[formName].validate(async (valid) => {

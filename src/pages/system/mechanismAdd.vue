@@ -69,11 +69,11 @@
               <el-radio :label="1" value="1" style="line-height: 40px;">
                 管理类型&nbsp;&nbsp;
                 <span v-if="ruleForm.deptType == 1">
-                  <el-select placeholder="请选择管理类型" v-model="ruleForm.countryType" :disabled="disabledState">
-                    <el-option label="省级卫计委" value="2"></el-option>
-                    <el-option label="市级卫计委" value="3"></el-option>
-                    <el-option label="县级卫计委" value="4"></el-option>
-                    <el-option label="区级卫计委" value="5"></el-option>
+                  <el-select placeholder="请选择管理类型" v-model="ruleForm.countryType">
+                    <el-option label="省级卫计委" :value="2"></el-option>
+                    <el-option label="市级卫计委" :value="3"></el-option>
+                    <el-option label="县级卫计委" :value="4"></el-option>
+                    <el-option label="区级卫计委" :value="5"></el-option>
                   </el-select>
                 </span>
 
@@ -84,9 +84,9 @@
                 <span v-if="ruleForm.deptType == 2">
                   <el-select placeholder="请选择医疗机构" style="width:200px" v-model="ruleForm.hospitalType"
                             >
-                    <el-option label="综合医院" value="1"></el-option>
-                    <el-option label="专科医院" value="2"></el-option>
-                    <el-option label="其他" value="3"></el-option>
+                    <el-option label="综合医院" :value="1"></el-option>
+                    <el-option label="专科医院" :value="2"></el-option>
+                    <el-option label="其他" :value="3"></el-option>
                   </el-select>
                   &nbsp;&nbsp;医院等级&nbsp;&nbsp;
                   <el-select placeholder="请选择医院等级" style="width:200px" v-model="ruleForm.hospitalGrade"
@@ -131,14 +131,14 @@
           </el-form-item>
           <el-form-item label="隶属关系:" prop="subjectionRelation" ref="form" v-if="ruleForm.deptType == 2">
             <el-select v-model="ruleForm.subjectionRelation" placeholder="请选择" style="width:200px">
-              <el-option label="委属(管)" value="1"></el-option>
-              <el-option label="省属" value="2"></el-option>
-              <el-option label="直辖市属" value="3"></el-option>
-              <el-option label="县属" value="4"></el-option>
-              <el-option label="区属" value="5"></el-option>
-              <el-option label="地属" value="6"></el-option>
-              <el-option label="兵团级" value="7"></el-option>
-              <el-option label="师级" value="8"></el-option>
+              <el-option label="委属(管)" :value="1"></el-option>
+              <el-option label="省属" :value="2"></el-option>
+              <el-option label="直辖市属" :value="3"></el-option>
+              <el-option label="县属" :value="4"></el-option>
+              <el-option label="区属" :value="5"></el-option>
+              <el-option label="地属" :value="6"></el-option>
+              <el-option label="兵团级" :value="7"></el-option>
+              <el-option label="师级" :value="8"></el-option>
             </el-select>
           </el-form-item>
         </div>
@@ -163,6 +163,7 @@
           deptName: '',
           deptTel: '',
           deptProvince: '',
+          deptCity:'',
           deptDistrict: '',
           deptAddress: '',
           deptSynopsis: '',
@@ -223,8 +224,8 @@
             {required: true, message: '请选择隶属机构', trigger: 'change'}
           ],
           subjectionRelation: [
-            {required: true, message: '请选择隶属关系', trigger: 'blur'},
-            {required: true, message: '请选择隶属关系', trigger: 'change'}
+            {required: false, message: '请选择隶属关系', trigger: 'blur'},
+            {required: false, message: '请选择隶属关系', trigger: 'change'}
           ]
         }
       }
@@ -245,35 +246,40 @@
               this.ruleForm.deptProvince = info.result.deptProvince;
               this.ruleForm.deptCity = info.result.deptCity;
               this.ruleForm.deptDistrict = info.result.deptDistrict;
-              console.log(this.ruleForm.deptCity)
+              // console.log(this.ruleForm.deptCity)
               //根据省 获取市
-              this.$fetch.api_system.getLinkageList(info.result.deptProvince).then((res) => {
-                if (res.code === "200") {
-                  this.cityList = res.result;
-                  //  console.log(this.cityList)
-                }
-              })
-              //根据市 获取区
-              this.$fetch.api_system.getLinkageList(info.result.deptCity).then((res) => {
-                if (res.code === "200") {
-                  this.areaList = res.result;
-                  // console.log(this.areaList)
-                }
-              })
+              if(info.result.deptProvince){
+                this.$fetch.api_system.getLinkageList(info.result.deptProvince).then((res) => {
+                  if (res.code === "200") {
+                    this.cityList = res.result;
+                    //  console.log(this.cityList)
+                  }
+                })
+              }
+              if(info.result.deptCity){
+                //根据市 获取区
+                this.$fetch.api_system.getLinkageList(info.result.deptCity).then((res) => {
+                  if (res.code === "200") {
+                    this.areaList = res.result;
+                    // console.log(this.areaList)
+                  }
+                })
+              }
+
               this.ruleForm.deptAddress = info.result.deptAddress;
               this.ruleForm.deptSynopsis = info.result.deptSynopsis;
               this.ruleForm.deptType = info.result.deptType;
               if (info.result.deptType === 1) {
                 //管理类型
-                this.ruleForm.countryType = info.result.countryType + '';
+                this.ruleForm.countryType = info.result.countryType;
               } else {
                 //医疗机构
-                this.ruleForm.hospitalType = info.result.hospitalType + '';
+                this.ruleForm.hospitalType = info.result.hospitalType;
                 this.ruleForm.hospitalGrade = info.result.hospitalGrade;
               }
               this.ruleForm.deptCode = info.result.deptCode;
               this.ruleForm.deptPid = info.result.deptPid;//级联选择器
-              this.ruleForm.subjectionRelation = info.result.subjectionRelation + '';
+              this.ruleForm.subjectionRelation = info.result.subjectionRelation;
               // this.ruleForm.subjectionRelation = info.result.subjectionRelation == null?'':info.result.subjectionRelation + '';
             }
           })
@@ -310,17 +316,35 @@
               //请求数据
               //console.log(this.ruleForm.deptPid[this.ruleForm.deptPid.length-1])//隶属机构
               console.log(this.ruleForm)
-              //判断是管理机构还是医疗机构  传对应的参数
-
-
+              //判断是管理机构还是医疗机构
+                const obj = {
+                    deptName: this.ruleForm.deptName,
+                    deptTel: this.ruleForm.deptTel,
+                    deptProvince: this.ruleForm.deptProvince,
+                    deptCity:this.ruleForm.deptCity,
+                    deptDistrict: this.ruleForm.deptDistrict,
+                    deptAddress: this.ruleForm.deptAddress,
+                    deptSynopsis: this.ruleForm.deptSynopsis,
+                    deptType: this.ruleForm.deptType,
+                    countryType: this.ruleForm.countryType,
+                    hospitalType: this.ruleForm.hospitalType,
+                    hospitalGrade: this.ruleForm.hospitalGrade,
+                    deptCode: this.ruleForm.deptCode,
+                    deptId:this.$route.query.deptId,
+                    // deptPid:this.ruleForm.deptPid[this.ruleForm.deptPid.length - 1],//级联选择器
+                    subjectionRelation: this.ruleForm.subjectionRelation
+                }
               if (this.$route.query.type == 1) {
                 url = 'addOrganization'
-                this.ruleForm.deptPid = this.ruleForm.deptPid[this.ruleForm.deptPid.length - 1]
+                obj.deptPid = this.ruleForm.deptPid[this.ruleForm.deptPid.length - 1];
+                // this.ruleForm.deptPid = this.ruleForm.deptPid[this.ruleForm.deptPid.length - 1]
               } else if (this.$route.query.type == 2) {
                 url = 'updateOrganization'
+                obj.deptPid = this.ruleForm.deptPid;
+                obj.uid = this.$route.query.uid;
               }
               // console.log(obj)
-              this.$fetch.api_system[url](this.ruleForm).then((res) => {
+              this.$fetch.api_system[url](obj).then((res) => {
                 if (res.code === "200") {
                   this.$router.push({
                     path: '/system/mechanism'

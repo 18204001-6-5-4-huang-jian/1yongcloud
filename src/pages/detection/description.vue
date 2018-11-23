@@ -153,7 +153,7 @@
             >
               <template slot-scope="scope">
                 <router-link :to="{path:'/detection/province',query:{area:scope.row.area,drugsNum:scope.row.drugsNum}}">
-                  <span>{{scope.row.area}}</span>
+                  <el-button type="text">{{scope.row.area}}</el-button>
                 </router-link>
               </template>
             </el-table-column>
@@ -172,7 +172,7 @@
                 <router-link
                   :to="{path:'/detection/drugList',query:{province:scope.row.province,drug:'',tableTitle:scope.row.province}}"
                   v-if="scope.row.drugsNum/1>0">
-                  <span>{{scope.row.drugsNum}}</span>
+                  <el-button type="text">{{scope.row.drugsNum}}</el-button>
                 </router-link>
                 <span v-else>0</span>
               </template>
@@ -183,7 +183,7 @@
                 <router-link
                   :to="{path:'/detection/drugList',query:{province:scope.row.province,drug:'1',tableTitle:scope.row.province}}"
                   v-if="scope.row.chemicalDrugsNum/1>0">
-                  <span>{{scope.row.chemicalDrugsNum}}</span>
+                  <el-button type="text">{{scope.row.chemicalDrugsNum}}</el-button>
                 </router-link>
                 <span v-else>0</span>
               </template>
@@ -194,7 +194,7 @@
                 <router-link
                   :to="{path:'/detection/drugList',query:{province:scope.row.province,drug:'2',tableTitle:scope.row.province}}"
                   v-if="scope.row.targetedDrugsNum/1>0">
-                  <span>{{scope.row.targetedDrugsNum}}</span>
+                  <el-button type="text">{{scope.row.targetedDrugsNum}}</el-button>
                 </router-link>
                 <span v-else>0</span>
               </template>
@@ -205,7 +205,7 @@
                 <router-link
                   :to="{path:'/detection/drugList',query:{province:scope.row.province,drug:'3',tableTitle:scope.row.province}}"
                   v-if="scope.row.immunologicalDrugsNum/1>0">
-                  <span>{{scope.row.immunologicalDrugsNum}}</span>
+                  <el-button type="text">{{scope.row.immunologicalDrugsNum}}</el-button>
                 </router-link>
                 <span v-else>0</span>
               </template>
@@ -216,7 +216,7 @@
                 <router-link
                   :to="{path:'/detection/drugList',query:{province:scope.row.province,drug:'4',tableTitle:scope.row.province}}"
                   v-if="scope.row.endocrineDrugsNum/1>0">
-                  <span>{{scope.row.endocrineDrugsNum}}</span>
+                  <el-button type="text">{{scope.row.endocrineDrugsNum}}</el-button>
                 </router-link>
                 <span v-else>0</span>
               </template>
@@ -227,7 +227,7 @@
                 <router-link
                   :to="{path:'/detection/drugList',query:{province:scope.row.province,drug:'5',tableTitle:scope.row.province}}"
                   v-if="scope.row.otherNum/1>0">
-                  <span>{{scope.row.otherNum}}</span>
+                  <el-button type="text">{{scope.row.otherNum}}</el-button>
                 </router-link>
                 <span v-else>0</span>
               </template>
@@ -381,14 +381,14 @@
 
 
   .button-group {
-    height: 70px;
+    /* height: 70px; */
     text-align: left;
     line-height: 70px;
     border-bottom: 1px solid #e5e5e5;
   }
 
   .button-group-button {
-    margin-left: 20px;
+    margin-left: 10px;
   }
   .echart{
     width:100%;

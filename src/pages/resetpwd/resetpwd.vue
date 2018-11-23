@@ -8,8 +8,8 @@
     <el-container>
       <el-header class="el-header"><img src="./images/logo.png" alt="" class="logo">全国抗肿瘤药物临床应用监测网</el-header>
     <div class="password content-page">
-    <h3 style="text-align:center;">修改登陆密码</h3>
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" labelWidth="95px" class="demo-ruleForm">
+    <h3 style="text-align:center;">修改登录密码</h3>
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" labelWidth="100px" class="demo-ruleForm">
       <el-form-item label="旧密码:" prop="oldWord">
         <el-input v-model="ruleForm.oldWord" type="password" ref="oldWord"></el-input>
         <span class="password-notice">请输入旧密码</span>
@@ -121,7 +121,7 @@ export default {
                       message:'修改密码成功请重新登录',
                     })
                     this.set_user_info(null)
-                    this.$router.push({
+                    this.$router.replace({
                       path:'/user/login'
                     })
                   }else{
@@ -200,7 +200,7 @@ export default {
     margin-top: -2px;
   }
   .first-login-container .demo-ruleForm {
-    width: 840px;
+    width: 850px;
     margin:30px auto;
   }
 

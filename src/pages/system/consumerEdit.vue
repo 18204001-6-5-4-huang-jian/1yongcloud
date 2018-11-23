@@ -106,12 +106,6 @@
       }
     },
      mounted(){
-         	//获取所属机构角色list
-     	    this.$fetch.api_system.getRoleList({}).then((res)=>{
-     	    	   if(res.code === '200'){
-     	    	   	  this.options = res.result;
-     	    	   }
-           })
            var roleId = '';
            this.$fetch.api_system.getUserInfo({uid:this.$route.query.uid}).then((res)=>{
                if(res.code === "200"){
@@ -125,12 +119,17 @@
                 roleId = res.result.userRole.roleId;//所属机构角色
                 this.userRoleUid = res.result.userRole.uid;//用于编辑接口
                }
-               //展示机构角色
-               for(let i in this.options){
-                 if(roleId == this.options[i].uid){
-                    this.ruleForm.roleId = this.options[i].name;//所属机构角色
-                 }
-               }
+               this.$fetch.api_system.getRoleList({}).then((res)=>{
+     	    	   if(res.code === '200'){
+                    this.options = res.result;
+                    //展示机构角色
+                    for(let i in this.options){
+                      if(roleId == this.options[i].uid){
+                          this.ruleForm.roleId = this.options[i].name;//所属机构角色
+                      }
+                    }
+     	    	   }
+              })
                 //获取所属机构
                 const obj = {
                       deptName:this.ruleForm.deptId,
@@ -243,7 +242,6 @@
        console.log(item);
      },
       changeDeptType(e){
-        // console.log(e)
         //切换机构类型，清空机构名称
         this.ruleForm.deptId = '';
       }

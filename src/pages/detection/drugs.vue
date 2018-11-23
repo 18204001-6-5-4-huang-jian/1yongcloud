@@ -22,6 +22,7 @@
             end-placeholder="结束日期"
             format="yyyy 年 MM 月"
             value-format="yyyy-MM"
+            style="width: 100%;"
             @change="change()"
           >
           </el-date-picker>
@@ -206,9 +207,11 @@
               <el-table-column
                 width="150"
                 :show-overflow-tooltip="true"
-                prop="dosageForm"
                 label="剂型"
               >
+                <template slot-scope="scope">
+                  {{scope.row.dosageForm | dosageForm}}
+                </template>
               </el-table-column>
               <el-table-column
                 width="150"
@@ -358,7 +361,14 @@
               },
               itemStyle: {
                 normal: {
-                  color: "#70ad47"
+                  color: new this.$echarts.graphic.LinearGradient(
+                    0, 0, 1, 0,
+                    [
+                      {offset: 0, color: '#00E7DC'},
+                      {offset: 1, color: '#00CAC0'}
+
+                    ]
+                  )
                 }
               },
               data: []
@@ -421,15 +431,14 @@
   }
 
   .button-group {
-    height: 70px;
+    /* height: 70px; */
     text-align: left;
     line-height: 70px;
-
     border-bottom: 1px solid #e5e5e5;
   }
 
   .button-group-button {
-    margin-left: 20px;
+    margin-left: 10px;
   }
 
   .title span .el-radio-group {

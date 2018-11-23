@@ -59,16 +59,16 @@
     methods: {
       pushEdit(){
         this.$router.push({
-          path:'/basicdata/regionalEdit',
-          query:{
-            uid:this.$route.query.uid
+          path: '/basicdata/regionalEdit',
+          query: {
+            uid: this.$route.query.uid
           }
         })
       },
       returnRegional(){
-          this.$router.push({
-            path:'/basicdata/regional'
-          })
+        this.$router.push({
+          path: '/basicdata/regional'
+        })
       }
     }
   }

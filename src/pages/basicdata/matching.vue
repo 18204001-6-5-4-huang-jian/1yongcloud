@@ -5,7 +5,7 @@
         <el-col :span="12">
           待匹配: <span style="color: #0084FE;">{{count}}条</span>
         </el-col>
-        <el-col :span="12" style="text-align: right;">
+        <el-col :span="12" style="text-align: right;margin-bottom: 10px;">
           <el-upload
             class="upload-demo"
             ref="upload"
@@ -42,7 +42,7 @@
                   商品名：<span>{{formData.productName}}</span>
                 </el-col>
                 <el-col :span="8">
-                  剂型：<span>{{formData.dosageForm}}</span>
+                  剂型：<span>{{formData.dosageForm | dosageForm}}</span>
                 </el-col>
                 <el-col :span="8">
                   注册证号：<span>{{formData.registrationNumber}}</span>
@@ -67,7 +67,7 @@
                   商品名：<span>{{formData1.productName}}</span>
                 </el-col>
                 <el-col :span="8">
-                  剂型：<span>{{formData1.dosageForm}}</span>
+                  剂型：<span>{{formData1.dosageForm | dosageForm}}</span>
                 </el-col>
                 <el-col :span="8">
                   注册证号：<span>{{formData1.registrationNumber}}</span>
@@ -78,7 +78,7 @@
 
           <el-row class="button-group">
             <el-button type="primary" @click="submitForm(1)" :size="$store.state.size">确定</el-button>
-            <el-button type="primary"  :size="$store.state.size">取消</el-button>
+            <el-button type="primary" :size="$store.state.size">取消</el-button>
           </el-row>
         </div>
       </el-row>
@@ -88,143 +88,150 @@
         <el-col :span="12" class="col">
           <div class="top-title">医院药品信息</div>
           <div class="table-search">
-              <el-form :model="searchForm" ref="searchFormRules" labelWidth="80px" class="demo-ruleForm" :show-message="false" :inline="true">
-                <el-form-item
-                  label="查找字段"
-                  prop="deptType"
-                >
-                  <el-select v-model="searchForm.deptType" clearable placeholder="请选择" style="width:200px" :size="$store.state.size">
-                    <el-option
-                      v-for="item in $store.state.queryDeptDrugibrary"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value">
-                    </el-option>
-                  </el-select>
-                </el-form-item>
-                <el-form-item
-                  label="查找内容"
-                  prop="deptParam"
-                >
-                  <el-input v-model.trim="searchForm.deptParam" autocomplete="off" style="width:200px" :size="$store.state.size"></el-input>
-                </el-form-item>
-                <el-form-item>
-                  <el-button type="primary" @click="query(1)" :size="$store.state.size">查询</el-button>
-                  <el-button type="primary" @click="moveOut()" :size="$store.state.size">移除</el-button>
-                </el-form-item>
-              </el-form>
-            </div>
+            <el-form :model="searchForm" ref="searchFormRules" labelWidth="80px" class="demo-ruleForm"
+                     :show-message="false" :inline="true">
+              <el-form-item
+                label="查找字段"
+                prop="deptType"
+              >
+                <el-select v-model="searchForm.deptType" clearable placeholder="请选择" style="width:200px"
+                           :size="$store.state.size" @change="query()">
+                  <el-option
+                    v-for="item in $store.state.queryDeptDrugibrary"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item
+                label="查找内容"
+                prop="deptParam"
+              >
+                <el-input v-model.trim="searchForm.deptParam" autocomplete="off" style="width:200px" @input="query()"
+                          :size="$store.state.size"></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="query(1)" :size="$store.state.size">查询</el-button>
+                <el-button type="primary" @click="moveOut()" :size="$store.state.size">移除</el-button>
+              </el-form-item>
+            </el-form>
+          </div>
           <div class="singleTable">
-              <el-table
-                border
-                ref="singleTable"
-                :size="$store.state.size"
-                :data="queryResult.list"
-                highlight-current-row
-                @current-change="handleCurrentChange"
-                style="width: 100%">
-                <el-table-column
-                  type="index"
-                  label="序号"
-                  fixed
-                  width="50">
-                </el-table-column>
-                <el-table-column
-                  label="通用名"
-                 width="150"
-                  :show-overflow-tooltip="true"
-                  prop="genericName"
-                >
-                </el-table-column>
-                <el-table-column
-                  label="商品名"
-                 width="150"
-                  :show-overflow-tooltip="true"
-                  prop="productName"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="productionUnits"
-                  width="250"
-                  label="生产单位"
-                  :show-overflow-tooltip="true"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="dosageForm"
-                 width="150"
-                  :show-overflow-tooltip="true"
-                  label="剂型"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="specifications"
-                 width="150"
-                  :show-overflow-tooltip="true"
-                  label="规格"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="approvalNumber"
-                 width="200"
-                  label="批准文号（国产药物）"
-                  :show-overflow-tooltip="true"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="registrationNumber"
-                 width="200"
-                  :show-overflow-tooltip="true"
-                  label="注册证号（进口药物）"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="drugCode"
-                 width="150"
-                  :show-overflow-tooltip="true"
-                  label="本院药品编码"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="localHealcareDirectory"
-                 width="200"
-                  :show-overflow-tooltip="true"
-                  label="是否纳入当地医保目录"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="localHealcareDirectoryTime"
-                 width="200"
-                  label="纳入当地医保目录时间"
-                  :show-overflow-tooltip="true"
-                >
-                </el-table-column>
-              </el-table>
-              <div class="block" style="margin-top: 10px">
-                <el-pagination
-                  small
-                  @size-change="pageSizeChange"
-                  @current-change="currentPageChange"
-                  :current-page="queryResult.pageNum"
-                  :page-sizes="[10, 20, 50, 100]"
-                  :file-list="fileList"
-                  :page-size="queryResult.pageSize"
-                  layout="total, sizes, prev, pager, next, jumper"
-                  :total="queryResult.total">
-                </el-pagination>
-              </div>
+            <el-table
+              border
+              ref="singleTable"
+              :size="$store.state.size"
+              :data="queryResult.list"
+              highlight-current-row
+              @current-change="handleCurrentChange"
+              style="width: 100%">
+              <el-table-column
+                type="index"
+                label="序号"
+                fixed
+                width="50">
+              </el-table-column>
+              <el-table-column
+                label="通用名"
+                width="150"
+                :show-overflow-tooltip="true"
+                prop="genericName"
+              >
+              </el-table-column>
+              <el-table-column
+                label="商品名"
+                width="150"
+                :show-overflow-tooltip="true"
+                prop="productName"
+              >
+              </el-table-column>
+              <el-table-column
+                prop="productionUnits"
+                width="250"
+                label="生产单位"
+                :show-overflow-tooltip="true"
+              >
+              </el-table-column>
+              <el-table-column
+                width="150"
+                :show-overflow-tooltip="true"
+                label="剂型"
+              >
+                <template slot-scope="scope">
+                  {{scope.row.dosageForm | dosageForm}}
+                </template>
+              </el-table-column>
+              <el-table-column
+                prop="specifications"
+                width="150"
+                :show-overflow-tooltip="true"
+                label="规格"
+              >
+              </el-table-column>
+              <el-table-column
+                prop="approvalNumber"
+                width="200"
+                label="批准文号（国产药物）"
+                :show-overflow-tooltip="true"
+              >
+              </el-table-column>
+              <el-table-column
+                prop="registrationNumber"
+                width="200"
+                :show-overflow-tooltip="true"
+                label="注册证号（进口药物）"
+              >
+              </el-table-column>
+              <el-table-column
+                prop="drugCode"
+                width="150"
+                :show-overflow-tooltip="true"
+                label="本院药品编码"
+              >
+              </el-table-column>
+              <el-table-column
+                prop="localHealcareDirectory"
+                width="200"
+                :show-overflow-tooltip="true"
+                label="是否纳入当地医保目录"
+              >
+              </el-table-column>
+              <el-table-column
+                prop="localHealcareDirectoryTime"
+                width="200"
+                label="纳入当地医保目录时间"
+                :show-overflow-tooltip="true"
+              >
+              </el-table-column>
+            </el-table>
+            <div class="block" style="margin-top: 10px">
+              <el-pagination
+                small
+                @size-change="pageSizeChange"
+                @current-change="currentPageChange"
+                :current-page="queryResult.pageNum"
+                :page-sizes="[10, 20, 50, 100]"
+                :file-list="fileList"
+                :page-size="queryResult.pageSize"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="queryResult.total">
+              </el-pagination>
             </div>
+          </div>
         </el-col>
         <el-col :span="12" class="col">
           <div class="top-title">标准药品信息</div>
           <div class="matching-table-table">
             <div class="table-search">
-              <el-form :model="searchForm1" ref="searchFormRules" labelWidth="80px" class="demo-ruleForm" :show-message="false" :inline="true">
+              <el-form :model="searchForm1" ref="searchFormRules" labelWidth="80px" class="demo-ruleForm"
+                       :show-message="false" :inline="true">
                 <el-form-item
                   label="查找字段"
                   prop="deptType"
                 >
-                  <el-select v-model="searchForm1.deptType" clearable placeholder="请选择" style="width:200px" :size="$store.state.size">
+                  <el-select v-model="searchForm1.deptType" clearable placeholder="请选择" style="width:200px"
+                             :size="$store.state.size" @change="query()">
                     <el-option
                       v-for="item in $store.state.queryDeptDrugibrary1"
                       :key="item.value"
@@ -237,7 +244,8 @@
                   label="查找内容"
                   prop="deptParam"
                 >
-                  <el-input v-model.trim="searchForm1.deptParam" autocomplete="off" style="width:200px" :size="$store.state.size"></el-input>
+                  <el-input v-model.trim="searchForm1.deptParam" autocomplete="off" style="width:200px"
+                            :size="$store.state.size" @input="query()"></el-input>
                 </el-form-item>
                 <el-form-item>
                   <el-button type="primary" @click="query(2)" :size="$store.state.size">查询</el-button>
@@ -261,14 +269,14 @@
                 <el-table-column
                   prop="genericName"
                   label="通用名"
-                 width="150"
+                  width="150"
                   :show-overflow-tooltip="true"
                 >
                 </el-table-column>
                 <el-table-column
                   prop="productName"
                   label="商品名"
-                 width="150"
+                  width="150"
                   :show-overflow-tooltip="true"
                 >
                 </el-table-column>
@@ -280,36 +288,38 @@
                 >
                 </el-table-column>
                 <el-table-column
-                  prop="dosageForm"
                   label="剂型"
-                 width="150"
+                  width="150"
                   :show-overflow-tooltip="true"
                 >
+                  <template slot-scope="scope">
+                    {{scope.row.dosageForm | dosageForm}}
+                  </template>
                 </el-table-column>
                 <el-table-column
                   prop="specifications"
                   label="规格"
-                 width="150"
+                  width="150"
                   :show-overflow-tooltip="true"
                 >
                 </el-table-column>
                 <el-table-column
                   prop="approvalNumber"
-                 width="150"
+                  width="150"
                   label="批准文号"
                   :show-overflow-tooltip="true"
                 >
                 </el-table-column>
                 <el-table-column
                   prop="registrationNumber"
-                 width="150"
+                  width="150"
                   label="注册证号"
                   :show-overflow-tooltip="true"
                 >
                 </el-table-column>
                 <el-table-column
                   prop="name"
-                 width="150"
+                  width="150"
                   label="药品名"
                   :show-overflow-tooltip="true"
                 >
@@ -317,7 +327,7 @@
                 <el-table-column
                   prop="genericEnglishName"
                   label="通用名（英文名）"
-                 width="150"
+                  width="150"
                   :show-overflow-tooltip="true"
                 >
                 </el-table-column>
@@ -330,70 +340,72 @@
                 </el-table-column>
                 <el-table-column
                   prop="packingCompanyName"
-                 width="200"
+                  width="200"
                   label="分包装批准文号"
                   :show-overflow-tooltip="true"
                 >
                 </el-table-column>
                 <el-table-column
                   prop="basedCode"
-                 width="150"
+                  width="150"
                   label="药品本位码"
                   :show-overflow-tooltip="true"
                 >
                 </el-table-column>
                 <el-table-column
-                  prop="scope"
-                 width="150"
+                  width="150"
                   label="国内外范围"
                   :show-overflow-tooltip="true"
                 >
+                  <template slot-scope="scope">
+                    {{scope.row.scope | scope}}
+                  </template>
                 </el-table-column>
                 <el-table-column
                   prop="classification"
-                 width="150"
+                  width="150"
                   label="药品种类"
                   :show-overflow-tooltip="true"
                 >
                 </el-table-column>
                 <el-table-column
                   prop="productCategory"
-                 width="150"
+                  width="150"
                   label="产品类别"
                   :show-overflow-tooltip="true"
                 >
                 </el-table-column>
                 <el-table-column
                   prop="countryHealcareDirectory"
-                 width="150"
+                  width="150"
                   label="治疗分类"
                   :show-overflow-tooltip="true"
                 >
                 </el-table-column>
                 <el-table-column
                   prop="countryHealcareDirectory"
-                 width="150"
+                  width="150"
                   label="纳入国家医保目录"
                   :show-overflow-tooltip="true"
                 >
                 </el-table-column>
                 <el-table-column
                   prop="countryHealcareDirectoryTime"
-                 width="200"
+                  width="200"
                   label="纳入国家医保目录时间"
                   :show-overflow-tooltip="true"
                 >
                 </el-table-column>
                 <el-table-column
                   prop="countryBasicDrugStatus"
-                 width="150"
+                  width="150"
                   label="是否为国家基本药物"
                   :show-overflow-tooltip="true"
                 >
                 </el-table-column>
                 <el-table-column
                   prop="countryBasicDrugTime"
-                 width="200"
+                  width="200"
                   label="纳入国家基本药物时间"
                   :show-overflow-tooltip="true"
                 >
@@ -407,14 +419,14 @@
                 </el-table-column>
                 <el-table-column
                   prop="countryVarietiesNegotialTime"
-                 width="200"
+                  width="200"
                   label="纳入国家谈判品种时间"
                   :show-overflow-tooltip="true"
                 >
                 </el-table-column>
                 <el-table-column
                   prop="ypId"
-                 width="150"
+                  width="150"
                   label="YPID"
                   :show-overflow-tooltip="true"
                 >
@@ -447,41 +459,39 @@
   export default {
     data(){
       return {
-        fileList:[],
+        fileList: [],
         searchForm: {
-          deptParam:'',
-          deptType:'',
-          pageNum:1,
-          pageSize:10,
+          deptParam: '',
+          deptType: '',
+          pageNum: 1,
+          pageSize: 10,
         },
         searchForm1: {
-          deptParam:'',
-          deptType:'',
-          deptDrugLibraryId:'',
-          pageNum:1,
-          pageSize:10,
+          deptParam: '',
+          deptType: '',
+          deptDrugLibraryId: '',
+          pageNum: 1,
+          pageSize: 10,
         },
-        formData:{
-          genericName:'',
-          specifications:'',
-          approvalNumber:'',
-          productName:'',
-          dosageForm:'',
-          registrationNumber:'',
-          uid:''
+        formData: {
+          genericName: '',
+          specifications: '',
+          approvalNumber: '',
+          productName: '',
+          dosageForm: '',
+          registrationNumber: '',
+          uid: ''
         },
-        formData1:{
-          genericName:'',
-          specifications:'',
-          approvalNumber:'',
-          productName:'',
-          dosageForm:'',
-          registrationNumber:'',
-          uid:''
+        formData1: {
+          genericName: '',
+          specifications: '',
+          approvalNumber: '',
+          productName: '',
+          dosageForm: '',
+          registrationNumber: '',
+          uid: ''
         },
-        searchFormRules:{
-
-        },
+        searchFormRules: {},
         //查询结果
         queryResult: {
           pageNum: 1,//当前页
@@ -498,7 +508,7 @@
           total: 0,
           list: []
         },
-        count:0
+        count: 0
       }
     },
     mounted(){
@@ -506,24 +516,18 @@
     },
     methods: {
       query(count){
-        if(count == 1) {
+        if (count == 1) {
           this.$fetch.api_basicData.queryDeptDrugibrary(
             this.searchForm
           )
             .then(response => {
               this.queryResult = response.result
-              if(this.$store.state.user_info.task.drugInfoContrast === 2){
-                this.changeTaskStatus()
-              }
-              if(this.$store.state.user_info.task.importDrug === 2){
-                this.changeTaskStatus()
-              }
-          })
-        } else if(count == 2){
-          if(!this.searchForm1.deptDrugLibraryId){
+            })
+        } else if (count == 2) {
+          if (!this.searchForm1.deptDrugLibraryId) {
             this.$message({
-              type:'warning',
-              message:'请选择一条医院药品信息'
+              type: 'warning',
+              message: '请选择一条医院药品信息'
             })
             return
           }
@@ -532,46 +536,46 @@
           )
             .then(response => {
               this.queryResult1 = response.result
-          })
+            })
         }
         this.getCount()
 
       },
       submitForm(count) {
-        if (count === 1){
-           console.log(this.formData.uid,this.formData1.uid)
-            if(this.formData.uid && this.formData1.uid){
-              this.$fetch.api_basicData.matchingMedicine({
-                uid:this.formData.uid,
-                sysDrugId:this.formData1.uid
-              })
-                .then(response => {
-                  this.$message({
-                    type:'success',
-                    message:'匹配成功'
-                  })
-                  Object.assign(this.$data.formData, this.$options.data().formData)
-                  Object.assign(this.$data.formData1, this.$options.data().formData1)
-                  this.queryResult1 = []
-                  this.query(1)
-                })
-            }else{
+        if (count === 1) {
+          console.log(this.formData.uid, this.formData1.uid)
+          if (this.formData.uid && this.formData1.uid) {
+            this.$fetch.api_basicData.matchingMedicine({
+              uid: this.formData.uid,
+              sysDrugId: this.formData1.uid
+            })
+              .then(response => {
                 this.$message({
-                  type:'warning',
-                  message:'请选择要匹配的药品'
+                  type: 'success',
+                  message: '匹配成功'
                 })
-            }
+                Object.assign(this.$data.formData, this.$options.data().formData)
+                Object.assign(this.$data.formData1, this.$options.data().formData1)
+                this.queryResult1 = []
+                this.query(1)
+              })
+          } else {
+            this.$message({
+              type: 'warning',
+              message: '请选择要匹配的药品'
+            })
+          }
         }
       },
       //移除
       moveOut(){
         this.$fetch.api_basicData.deleteMedicine(
-          {uid:this.formData.uid}
+          {uid: this.formData.uid}
         )
           .then(response => {
-              this.$message.success('数据移除成功')
-              this.formData = {}
-              this.query(1)
+            this.$message.success('数据移除成功')
+            this.formData = {}
+            this.query(1)
           })
       },
       //每页显示查询结果条数变更事件，做重新查询操作
@@ -617,37 +621,36 @@
         this.formData1.registrationNumber = val.registrationNumber
       },
 
-      handleAvatarSuccess(res, file,fileList) {
-       if(res.success == true){
-         this.$message({
-           message: '文件上传成功',
-           type: 'success'
-         });
-         this.query(1)
-       }else{
-         console.log(fileList)
-         this.fileList = []
-         this.$message({
-           message: res.message,
-           type: 'error'
-         });
-       }
+      handleAvatarSuccess(res, file, fileList) {
+        if (res.success == true) {
+          this.$message({
+            message: '文件上传成功',
+            type: 'success'
+          });
+          this.query(1)
+        } else {
+          this.fileList = []
+          this.$message({
+            message: res.message,
+            type: 'error'
+          });
+        }
 
       },
       beforeAvatarUpload(file){
 
-        var testmsg=file.name.substring(file.name.lastIndexOf('.')+1)
+        var testmsg = file.name.substring(file.name.lastIndexOf('.') + 1)
         const isLt2M = file.size / 1024 / 1024 < 100
         const extension = testmsg === 'xls'
         const extension2 = testmsg === 'xlsx'
-        if(!extension && !extension2) {
+        if (!extension && !extension2) {
           this.$message({
-            message: '上传文件只能是 xls、xlsx格式!',
-            type: 'warning'
+            message: '上传文件只能是 xls、xlsx格式!',
+            type: 'warning'
           });
           return false
         }
-        if(!isLt2M) {
+        if (!isLt2M) {
           this.$message({
             message: '上传文件大小不能超过 100MB!',
             type: 'warning'
@@ -658,7 +661,7 @@
       },
       // 上传
       uploadUrl(){
-        return server.server_base_url+"/odmapi/excel/uploadDrug"
+        return server.server_base_url + "/odmapi/excel/uploadDrug"
       },
       handleRemove(file, fileList) {
 
@@ -672,49 +675,48 @@
             this.count = response.result
           })
       },
-      //保存用户任务状态
-      changeTaskStatus(){
-        this.$fetch.api_login.taskStatistics()
-          .then(response => {
-            this.$store.state.user_info.task = response.result
-            this.$store.dispatch(SET_USER_INFO, this.$store.state.user_info)
-          })
-      }
     },
   }
 </script>
 
-<style  rel="stylesheet/scss" lang="scss" scoped>
-   .matching{
-     height:100%;
-   }
-   .binding {
-     border:1px solid #e5e5e5;
-     padding:20px;
-     margin-bottom: 10px;
-   }
-  .title{
-    line-height:40px;
+<style rel="stylesheet/scss" lang="scss" scoped>
+  .matching {
+    height: 100%;
   }
-  .button-group{
+
+  .binding {
+    border: 1px solid #e5e5e5;
+    padding: 20px;
+    margin-bottom: 10px;
+  }
+
+  .title {
+    line-height: 40px;
+  }
+
+  .button-group {
     text-align: right;
-    margin-top:20px;
+    margin-top: 20px;
   }
-   .top-title{
-     text-align: center;
-     padding-top: 10px;
-     line-height: 39px;
-     font-size:18px;
-   }
-  .block{
+
+  .top-title {
+    text-align: center;
+    padding-top: 10px;
+    line-height: 39px;
+    font-size: 18px;
+  }
+
+  .block {
     text-align: right;
   }
-  .demo-ruleForm{
-    padding-top:10px;
-    border:1px solid #e5e5e5;
-    border-bottom:none;
+
+  .demo-ruleForm {
+    padding-top: 10px;
+    border: 1px solid #e5e5e5;
+    border-bottom: none;
   }
-  .titlecolor{
+
+  .titlecolor {
     color: #0084FE;
   }
 </style>
