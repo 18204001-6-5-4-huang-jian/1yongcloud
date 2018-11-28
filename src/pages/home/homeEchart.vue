@@ -5,7 +5,7 @@
         <div  class="homeEchart-col">
           <div  class="home-button-group">
           </div>
-          <charts :options="optionA" style="height: 350px;width: 90%;" :autoResize=true></charts>
+          <charts :options="optionA" style="height: 350px;width: 100%;" :autoResize=true></charts>
           <div class="homeEchart-show">
             <router-link to="/detection/description">
               <el-button  type="text">查看更多</el-button>
@@ -21,7 +21,7 @@
             <el-radio-button :label="2">采购金额</el-radio-button>
           </el-radio-group>
           </div>
-          <charts :options="optionB" style="height: 350px;width: 90%;" :autoResize=true></charts>
+          <charts :options="optionB" style="height: 350px;width: 100%;" :autoResize=true></charts>
           <div class="homeEchart-show">
             <router-link :to="{path:'/detection/region'}">
               <el-button  type="text">查看更多</el-button>
@@ -40,7 +40,7 @@
             </el-radio-group>
           </div>
 
-          <charts :options="optionC" style="height: 350px;width: 90%;" :autoResize=true></charts>
+          <charts :options="optionC" style="height: 350px;width: 100%;" :autoResize=true></charts>
           <div class="homeEchart-show">
             <router-link to="/detection/drugs">
               <el-button  type="text">查看更多</el-button>
@@ -51,11 +51,11 @@
       <el-col  :xl="12" :lg="12" :md="24" >
         <div  class="homeEchart-col">
           <div  class="home-button-group"></div>
-          <charts :options="optionD" style="height: 350px;width: 90%;" :autoResize=true></charts>
+          <charts :options="optionD" style="height: 350px;width: 100%;" :autoResize=true></charts>
           <div class="homeEchart-show">
-            <!--<router-link to="/detection/description">-->
-              <el-button  type="text"></el-button>
-            <!--</router-link>-->
+            <router-link to="/detection/average">
+              <el-button  type="text">查看更多</el-button>
+            </router-link>
           </div>
         </div>
       </el-col>
@@ -195,12 +195,14 @@
           },
           grid: {
             left: '3%',
-            right: '4%',
-            bottom: '5.5%',
+            right: '9%',
+            bottom: '6%',
             containLabel: true
           },
           xAxis:  {
+            
             type: 'value',
+            name: '单位万元',
 
           },
           yAxis: {
@@ -292,12 +294,13 @@
           },
           grid: {
             left: '3%',
-            right: '4%',
+            right: '9%',
             bottom: '5.5%',
             containLabel: true
           },
           xAxis:  {
-            type: 'value'
+            type: 'value',
+             name: '单位万元',
           },
           yAxis: {
             type: 'category',
@@ -362,7 +365,7 @@
          grid: {
            left: '3%',
            right: '4%',
-           bottom: '5%',
+           bottom: '6%',
            containLabel: true
          },
          xAxis : [

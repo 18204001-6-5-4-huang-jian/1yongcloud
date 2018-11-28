@@ -182,7 +182,6 @@
                 label="药品名"
                 width="150"
                 :show-overflow-tooltip="true"
-                v-if="searchForm.deptType == 1"
               >
                 <template slot-scope="scope">
                   <router-link :to="{path:'/detection/drugDetail',query:{genericName:scope.row.genericName}}">
@@ -303,24 +302,13 @@
       }
     },
     created(){
-      this.query(null, 1)
+      this.query()
     },
     mounted(){
 
     },
     methods: {
-      query(row, count){
-        if (count == 1) {
-          this.searchForm.deptType = count
-        } else if (count == 2) {
-          this.searchForm.deptType = count
-          this.searchForm.province = row.country
-        } else if (count == 3) {
-          this.searchForm.deptType = count
-          this.searchForm.city = row.country
-        } else if (count == 4) {
-          this.searchForm.deptType = count
-        }
+      query(){
         this.createCharts()
       },
       createCharts(){

@@ -15,7 +15,7 @@
         <el-form-item
           label="省份:"
         >
-          <el-select v-model="form.subordinate" placeholder="请选择省份" style="width:120px" clearable
+          <el-select v-model="form.subordinate" placeholder="请选择省份" style="width:200px" clearable
                      :size="$store.state.size" @change="getCityList($event)">
             <el-option
               v-for="item in provinceList"
@@ -28,7 +28,7 @@
         <el-form-item
           label="市:"
         >
-          <el-select v-model="form.subordinateCity" placeholder="请选择市" style="width:120px" clearable
+          <el-select v-model="form.subordinateCity" placeholder="请选择市" style="width:200px" clearable
                      :size="$store.state.size">
             <el-option
               v-for="item in cityList"
@@ -95,7 +95,7 @@
         </el-pagination>
       </div>
       <!-- dialog -->
-      <el-dialog title="添加区划" :visible.sync="dialogFormVisible" center>
+      <el-dialog title="添加区划" :visible.sync="dialogFormVisible" center ref="dialog">
         <el-form :model="formDialog" ref="formDialog" :rules="dialogRules">
           <el-form-item label="区域名称" label-width="120px" prop="name">
             <el-input v-model="formDialog.name" placeholder="请输入区划名称" clearable style="width:200px;"></el-input>
@@ -173,10 +173,10 @@
         },
         dialogRules: {
           name: [
-            {required: true, message: '请输入区划名称', trigger: 'change'}
+            {required: true, message: '请输入区划名称', trigger: ['change','blur']}
           ],
           code: [
-            {required: true, message: '请输入区划编码', trigger: 'change'}
+            {required: true, message: '请输入区划编码', trigger: ['change','blur']}
           ]
         },
         //tree
@@ -285,6 +285,16 @@
         this.$refs[form].validate(async (valid) => {
           if (valid) {
             const treeList = this.$refs.tree.getCheckedKeys();//获取code数组
+            if(treeList.length == 0){
+              this.$message({
+                type:'error',
+                message:'请选择省或者市'
+              })
+              var dom =  this.$refs.dialog.$refs.dialog.parentNode;
+              // dom.animate({scrollTop: '0px'}, 200);
+              dom.scrollTop = 0;
+              return false;
+            }
             for (let i = 0; i < this.data.length; i++) {
               if (this.data[i].child && this.data[i].child != null) {
                 for (let j = 0; j < this.data[i].child.length; j++) {
@@ -317,7 +327,10 @@
               })
             }
           } else {
-
+              var dom =  this.$refs.dialog.$refs.dialog.parentNode;
+              // dom.animate({scrollTop: '0px'}, 200);
+              dom.scrollTop = 0;
+              return false;
           }
         })
       }

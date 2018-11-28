@@ -316,6 +316,7 @@ router.beforeEach((to, from, next) => {
       })
     }
   } else {
+
     if(is_login&&store.state.user_info.user.firstLogin == 2){
       if(toName == 'login' || toName == 'firstLogin'){
         next()

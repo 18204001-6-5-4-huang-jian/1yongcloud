@@ -236,7 +236,7 @@
                 </template>
               </el-table-column>
               <el-table-column
-                label="乙类金额占比"
+                label="甲类金额占比"
                 width="120"
               >
                 <template slot-scope="scope">
@@ -244,7 +244,7 @@
                 </template>
               </el-table-column>
               <el-table-column
-                label="甲类金额占比"
+                label="乙类金额占比"
                 width="120"
               >
                 <template slot-scope="scope">

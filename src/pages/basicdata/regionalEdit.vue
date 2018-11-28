@@ -1,6 +1,6 @@
 <template>
   <div class="regional-detail-container">
-    <el-form :model="ruleForm" :rules="ruleDefault" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
       <el-form-item label="区域名称" prop="name">
         <el-input v-model="ruleForm.name" style="width:200px;" ref="name"></el-input>
       </el-form-item>
@@ -44,13 +44,12 @@
           remark: '',
           deptPid: []
         },
-        ruleDefault: {},
         rules: {
           name: [
-            {required: true, message: '请输入区域名称', trigger: 'blur'}
+            {required: true, message: '请输入区域名称', trigger: ['change','blur']}
           ],
           code: [
-            {required: true, message: '请输入区域编码', trigger: 'blur'}
+            {required: true, message: '请输入区域编码', trigger: ['change','blur']}
           ]
         },
         data: [],
@@ -77,6 +76,13 @@
           if (valid) {
             //数据处理
             const treeList = this.$refs.tree.getCheckedKeys();
+            if(treeList.length == 0){
+              this.$message({
+                type:'error',
+                message:'请选择省或者市'
+              })
+              return false;
+            }
             for (let i = 0; i < this.data.length; i++) {
               if (this.data[i].child && this.data[i].child != null) {
                 for (let j = 0; j < this.data[i].child.length; j++) {

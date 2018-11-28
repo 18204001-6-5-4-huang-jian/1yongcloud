@@ -72,7 +72,7 @@ export default function fetch(options) {
       .catch((error)=>{
       if(error.response.status == '401'){
         loadingInstance.close()
-        Message.error('对不起，您的登录状态已过期，请重新登陆')
+        Message.error('对不起，您的登录状态已过期，请重新登录')
         setTimeout(()=>{
           setUserInfo(null)
           router.replace('/user/login')

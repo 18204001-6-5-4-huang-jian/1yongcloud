@@ -311,7 +311,7 @@
         this.echartState = false
         this.$fetch.api_home.findListData(this.searchForm)
           .then(response => {
-            this.height = (response.result.list.list.length+1) *34+'px'
+            this.height = (response.result.list.list.length+1) *51+'px'
             this.echartState = true
             this.$nextTick().then(()=>{
             this.queryResult = response.result

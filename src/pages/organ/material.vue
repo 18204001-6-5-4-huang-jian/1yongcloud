@@ -82,21 +82,21 @@ import {SET_USER_INFO} from 'store/actions/type'
 import {GET_USER_INFO} from 'store/getters/type'
   export default {
     data(){
-      var valid_code = (rule, value, callback) => {
-        if (value == '') {
-          callback(new Error('验证码不能为空'))
-        } else if (value.length == 6) {
-            const state = this.vertifyCode()
-            console.log(11111,state)
-            if(state){
-                callback()
-            }else{
-              callback(new Error('验证码错误'))
-            }
-        } else {
-          callback()
-        }
-      };
+      // var valid_code = (rule, value, callback) => {
+      //   if (value == '') {
+      //     callback(new Error('验证码不能为空'))
+      //   } else if (value.length == 6) {
+      //       const state = this.vertifyCode()
+      //       console.log(11111,state)
+      //       if(state){
+      //           callback()
+      //       }else{
+      //         callback(new Error('验证码错误'))
+      //       }
+      //   } else {
+      //     callback()
+      //   }
+      // };
       return {
         ruleForm: {
           phone: '',
@@ -169,20 +169,25 @@ import {GET_USER_INFO} from 'store/getters/type'
             set_user_info: SET_USER_INFO
           }),
           submitFormPhone(formName){
-              this.$refs[formName].validate(async (valid) => {
+              this.$refs[formName].validate((valid) => {
                 if(valid){
                   this.$fetch.api_detection.vertifyCode({
                     loginName:this.get_user_info.user.loginName,
                     smsAuthCode:this.formDialog.code
                   }).then(res=>{
                      if(res.success){
-                       this.$fetch.api_detection.updateUserInfo({loginName:this.get_user_info.user.loginName,phone:this.formDialog.newphone}).then(res=>{
-                         this.dialogFormVisible = false
-                         this.$message({
-                           type:'success',
-                           message:'修改成功'
-                         })
-                         this.updateData();
+                       this.$fetch.api_detection.updateUserInfo({loginName:this.get_user_info.user.loginName,phone:this.formDialog.newphone}).then(resp=>{
+                         if(resp.success){
+                            this.dialogFormVisible = false;
+                            this.verificationState = true;
+                            clearInterval(this.timer);
+                            this.timer = null;
+                            this.$message({
+                              type:'success',
+                              message:'修改成功'
+                            })
+                            this.updateData();
+                         }
                        })
                      }
                   })
@@ -196,7 +201,6 @@ import {GET_USER_INFO} from 'store/getters/type'
              //获取验证码
              const res = await this.$fetch.api_detection.getPhoneCode({loginName:this.get_user_info.user.loginName});
              if(res.code === "200"){
-              //  console.log(res);
               this.verificationState = false;
               this.verificationCount = 60;
               this.changeCount()
@@ -220,19 +224,19 @@ import {GET_USER_INFO} from 'store/getters/type'
               }, 1000)
             }
           },
-           vertifyCode(){
-              //验证验证码
-              let state = false
-              if(this.formDialog.code != ''){
-               this.$fetch.api_detection.vertifyCode({
-                  loginName:this.get_user_info.user.loginName,
-                  smsAuthCode:this.formDialog.code
-                }).then(res=>{
+          //  vertifyCode(){
+          //     //验证验证码
+          //     let state = false
+          //     if(this.formDialog.code != ''){
+          //      this.$fetch.api_detection.vertifyCode({
+          //         loginName:this.get_user_info.user.loginName,
+          //         smsAuthCode:this.formDialog.code
+          //       }).then(res=>{
 
-               })
-              }
-             return state
-          },
+          //      })
+          //     }
+          //    return state
+          // },
           submitFormEmail(formName){
               this.$refs[formName].validate(async (valid) => {
                   if(valid){

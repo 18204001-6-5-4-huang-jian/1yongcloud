@@ -144,8 +144,8 @@
               <el-radio-button :label="2">医保</el-radio-button>
               <el-radio-button :label="3">未纳入医保</el-radio-button>
               <el-radio-button :label="4">医保占比</el-radio-button>
-              <el-radio-button :label="6">甲类占比</el-radio-button>
-              <el-radio-button :label="5">乙类占比</el-radio-button>
+              <el-radio-button :label="5">甲类占比</el-radio-button>
+              <el-radio-button :label="6">乙类占比</el-radio-button>
             </el-radio-group>
             <el-radio-group v-model="searchForm.moneyType" :size="$store.state.size" @change="query()"
                             class="button-group-button">
@@ -261,7 +261,7 @@
                 </template>
               </el-table-column>
               <el-table-column
-                label="乙类金额占比"
+                label="甲类金额占比"
                 width="120"
               >
                 <template slot-scope="scope">
@@ -269,7 +269,7 @@
                 </template>
               </el-table-column>
               <el-table-column
-                label="甲类金额占比"
+                label="乙类金额占比"
                 width="120"
               >
                 <template slot-scope="scope">

@@ -21,7 +21,7 @@ export const server_base_url = 'http://192.168.1.201/'
 // 宗瞳
 // export const server_base_url = 'http://192.168.1.92:50652/'
 //晨阳
-// export const server_base_url = 'http://192.168.1.44:50652/'
+// export const server_base_url = 'http://192.168.1.68:50652/'
 //王鹏
 // export const server_base_url = 'http://192.168.1.82:50652/'
 //部署环境

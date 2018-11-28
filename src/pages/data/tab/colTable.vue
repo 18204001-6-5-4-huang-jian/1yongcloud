@@ -30,34 +30,7 @@
         label="校验结果"
         width="100">
         <template slot-scope="scope">
-        <el-popover
-          placement="right-start"
-          style="min-width:800px;"
-          trigger="click"
-          :width="getWidth"
-          v-model="scope.row.visible">
-          <el-table :data="gridData.list"  size="mini" style="width: 100%;color:#ffffff;" :row-style="rowClass" class="row-table" :highlight-current-row="false">
-            <el-table-column width="100" property="fieldName" label="字段名"></el-table-column>
-            <el-table-column width="150" property="fieldInfo" label="字段描述"></el-table-column>
-            <el-table-column width="80" property="messageType" label="类型"></el-table-column>
-            <el-table-column width="80" property="messageCode" label="代码"></el-table-column>
-            <!--<el-table-column width="80" property="fieldCheckStatus" label="校验情况"></el-table-column>-->
-            <el-table-column  property="msgs" label="描述"></el-table-column>
-          </el-table>
-          <div class="block">
-            <el-pagination
-              small
-              @size-change="gridDatapageSizeChange"
-              @current-change="gridDatacurrentPageChange"
-              :current-page="gridData.pageNum"
-              :page-sizes="[10, 20, 50, 100]"
-              :page-size="gridData.pageSize"
-              layout="total, sizes, prev, pager, next, jumper"
-              :total="gridData.total">
-            </el-pagination>
-          </div>
           <span slot="reference" v-if="scope.row.taskRowCheckStatus == '0'"> <i class="iconfont icon-cuowu result-error" @click="getDetailError(scope.row)"  ></i></span>
-        </el-popover >
           <span slot="reference" v-if="scope.row.taskRowCheckStatus == '1'"> <i class="iconfont icon-zhengque" ></i></span>
       </template>
 
@@ -97,6 +70,31 @@
         :total="queryResult.total">
       </el-pagination>
     </div>
+    <el-dialog
+      title="数据提示"
+      :visible.sync="visible"
+      width="50%"
+      center>
+      <el-table :data="gridData.list"  size="mini" border style="width: 100%;color:#ffffff;" :row-style="rowClass">
+        <el-table-column width="100" property="fieldName" label="字段名"></el-table-column>
+        <el-table-column width="150" property="fieldInfo" label="字段描述"></el-table-column>
+        <el-table-column width="80" property="messageType" label="类型"></el-table-column>
+        <el-table-column width="80" property="messageCode" label="代码"></el-table-column>
+        <el-table-column  property="msgs" label="描述"></el-table-column>
+      </el-table>
+      <div class="block">
+        <el-pagination
+          small
+          @size-change="gridDatapageSizeChange"
+          @current-change="gridDatacurrentPageChange"
+          :current-page="gridData.pageNum"
+          :page-sizes="[10, 20, 50, 100]"
+          :page-size="gridData.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="gridData.total">
+        </el-pagination>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -175,8 +173,10 @@
             this.queryDetail.taskId = row.taskId
             this.queryDetail.batchTaskResultRowId = row._id
           }
+
           this.$fetch.api_data.rowFields(this.queryDetail)
             .then(response => {
+              this.visible = true
               this.gridData = response.result
             })
       }

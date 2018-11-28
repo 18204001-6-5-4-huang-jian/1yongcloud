@@ -38,6 +38,12 @@
           </el-option>
         </el-select>
       </el-form-item>
+      <el-form-item style="float: right;margin-right: 0px;">
+        <el-button type="primary" @click="downLoad('上传模板.zip')">下载上传模板</el-button>
+      </el-form-item>
+      <el-form-item style="float: right;">
+        <el-button type="primary" @click="downLoad('上传说明.zip')">下载上传说明</el-button>
+      </el-form-item>
     </el-form>
     <el-table
       :data="queryResult.list"
@@ -136,7 +142,7 @@
       return {
         searchForm: {
           batchDataYear: this.$route.query.batchDataYear ? this.$route.query.batchDataYear : new Date().getFullYear(),
-          batchDataMonth: this.$route.query.batchDataYear ? this.$route.query.batchDataMonth : new Date().getMonth() + 1,
+          batchDataMonth: this.$route.query.batchDataYear ? this.$route.query.batchDataMonth : new Date().getMonth(),
           batchType: this.$route.query.batchType
         },
         optionsYear: [],
@@ -152,7 +158,9 @@
         tasks: [],
         formData: {},
         fileList: [],
-        batchId:''
+        batchId:'',
+        warningArr:[],
+        warningVisible:false,
       }
     },
     mounted(){
@@ -168,6 +176,10 @@
       this.query()
     },
     methods: {
+      downLoad(name){
+        let url = `${server.server_base_url}basefile/${name}`
+        window.open(url)
+      },
       query(){
         this.$fetch.api_data.uploadList(this.searchForm)
           .then(response => {
@@ -191,11 +203,11 @@
           this.$confirm(' 此操作将覆盖已上报文件,是否继续?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
-            type: 'warning'
+            type: 'warning',
           }).then(() => {
             this.submit()
-          }).catch(() => {
-            this.$message({
+            }).catch(() => {
+              this.$message({
               type: 'info',
               message: '已取消上传'
             });
@@ -205,6 +217,31 @@
         }
       },
       submit(){
+        this.warningArr =this.checkedArr()
+        console.log(this.formData)
+        if(this.tasks.length === 0){
+          this.$message({
+            type: 'warning',
+            message: '请勾选上传文件'
+          });
+          return
+        }
+        if(this.warningArr.length>0){
+          this.$confirm(`您尚未上传${this.warningArr.join('，')}，立即上传？`, '提示', {
+            confirmButtonText: '是',
+            cancelButtonText: '否',
+            type: 'warning',
+          }).then(() => {
+           this.sure()
+          }).catch(() => {
+
+          });
+        }else {
+          this.sure()
+        }
+
+      },
+      sure(){
         this.formData = new FormData();
         this.$refs.upload.submit();
         this.formData.append('tasks', this.tasks)
@@ -218,6 +255,17 @@
             });
             this.query()
           })
+      },
+      checkedArr(){
+          let arr = []
+        for (let i = 0; i < this.queryResult.list.length; i++) {
+           if(this.queryResult.list[i].uploadStatus == 0){
+              if(this.tasks.indexOf(this.queryResult.list[i].taskCode) == -1){
+                  arr.push(`《${this.queryResult.list[i].taskName}》`)
+              }
+           }
+        }
+        return arr
       },
       handleAvatarSuccess(res, file, fileList) {
         this.$message({
@@ -300,5 +348,11 @@
     margin-top: 20px;
     width: 400px;
   }
+  .el-message-box {
+    width:600px!important;
+  }
 </style>
 
+<style>
+
+</style>
